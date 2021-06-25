@@ -7,9 +7,6 @@ import sqlite3
 import pandas as pd
 import numpy as np
 from numpy.random import default_rng
-from rdkit import Chem, RDLogger
-# Turn off rdkit warnings
-RDLogger.DisableLog('rdApp.*')
 from scipy.special import comb
 
 class PolyPlanet:
@@ -898,7 +895,8 @@ class PolyNation:
                                            self.land.land_chromosomes,
                                            size=num_chromosomes_initial))
             smiles = self.land.generative_function(polymer_chromosomes_ids, 
-                                            self.land.planet.chromosomes) 
+                                            self.land.planet.chromosomes,
+                                            self.rng) 
             if smiles == None or smiles == '':
                 continue
             else:
@@ -938,7 +936,7 @@ class PolyNation:
             parent1 = parents[i][0]
             parent2 = parents[i][1]
             smiles = self.land.generative_function(child, 
-                        self.land.planet.chromosomes) 
+                        self.land.planet.chromosomes, self.rng) 
             if smiles == None or smiles == '':
                 continue
             else:
