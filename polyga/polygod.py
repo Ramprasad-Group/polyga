@@ -304,6 +304,7 @@ class PolyLand:
         self.name = name
         self.age = 0
         self.fitness_function = fitness_function
+        self.generative_function = generative_function
         self.planet = planet
         self.planet.add(self)
         self.nations = []
