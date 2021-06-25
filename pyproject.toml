@@ -15,6 +15,7 @@ joblib = "^1.0.1"
 click = "^8.0.1"
 regex = "^2021.4.4"
 tqdm = "^4.61.1"
+sqlite = "^3.36.0"
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]
