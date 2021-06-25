@@ -1,9 +1,9 @@
 [tool.poetry]
-name = "pgfingerprinting"
-version = "1.0.1"
-description = "Polymer Genome Fingerprinting"
+name = "polyga"
+version = "1.0.0"
+description = "Polymer Genetic Algorithm"
 authors = ["Chiho Kim <chiho.kim@gatech.edu>", "Joseph Kern <jkern34@gatech.edu>"]
-repository = "https://github.com/Ramprasad-Group/pgfingerprinting.git"
+repository = "https://github.com/jdkern11/polyga.git"
 
 [tool.poetry.dependencies]
 python = "^3.7"
