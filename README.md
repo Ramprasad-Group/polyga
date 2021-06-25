@@ -18,8 +18,8 @@ source code page.
 1. `pip install git+https://github.com/jdkern11/polyga.git`
 
 ### Anaconda install
-1. `run "conda create -n polyga python=3.7"` 
-2. run "conda activate polyga"
+1. `conda create -n polyga python=3.7` 
+2. `conda activate polyga`
 3. `pip install git+https://github.com/jdkern11/polyga.git`
 
 
