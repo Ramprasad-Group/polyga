@@ -10,23 +10,18 @@ evolution of your polymers.
 PolyPlanet keeps track of the PolyLands and PolyNations 
 and facilitates migration between nations.
 
-## Setup
-This setup assumes you understand how to use Anaconda on your operating system.
-1. run "conda create -n polyga python=3.7" 
-2. run "conda activate polyga"
-3. Open the "requirements.txt" file on github
-4. Manually run the following commands in terminal
-    1. pip install files (and associated versions) listed (newer versions may
-       work, but it is vital the scikit_learn version == 0.20.3
-    2. conda install rdkit
-5. On github, press the green "code" tab and copy the package location data
-6. In your teminal, type "pip install git+" and paste the location (i.e., pip 
-install git+https://github.com/Ramprasad-Group/PolyGA.git@v1.2)
-    - Note that this location should have git+ before the install. You can
-    select the install version by adding @v#.# at the end
-
+## Intall
 If you run into any issues, post an issue in the "Issues" tab on the github
 source code page.
+
+### pip install
+1. `pip install git+https://github.com/jdkern11/polyga.git`
+
+### Anaconda install
+1. `run "conda create -n polyga python=3.7"` 
+2. run "conda activate polyga"
+3. `pip install git+https://github.com/jdkern11/polyga.git`
+
 
 
 ## Tutorials
