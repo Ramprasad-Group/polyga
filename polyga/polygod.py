@@ -237,7 +237,7 @@ class PolyPlanet:
                        + 'birth_land VARCHAR, birth_nation VARCHAR, '
                        + 'birth_planet VARCHAR, '
                        + 'str_chromosome_ids VARCHAR, land VARCHAR, '
-                       + 'generation INT, nation VARCHAR, planet VARCHAR'
+                       + 'generation INT, nation VARCHAR, planet VARCHAR)'
                       )
             cur.execute(command)
             self.conn.commit()
