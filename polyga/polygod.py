@@ -67,7 +67,8 @@ class PolyPlanet:
                 attached.
             fingerprint_function (callable):
                 Function to fingerprint polymers. Passed population dataframe. 
-                Must return dataframe with fingerprints attached.
+                Must return dataframe with fingerprints attached and a list
+                of fingerprint column headers.
             random_seed (int): 
                 Random seed to use for planet. If 0, no
                 random seed is used.
@@ -639,7 +640,7 @@ class PolyNation:
                 If true narration message occur
         """
         st = time()
-        self.population = (
+        self.population, self.__fp_headers = (
                 self.land.planet.fingerprint_function(self.population.copy())
         )
         if narrate:
