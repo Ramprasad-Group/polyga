@@ -93,7 +93,6 @@ class PolyPlanet:
             self.rng = default_rng(seed=random_seed)
         else:
             self.rng = default_rng()
-        self.loc_of_models = os.path.join(os.getcwd(), loc_of_models)
 
         if path_to_dna == None:
             path_to_dna = os.path.join(
@@ -238,9 +237,8 @@ class PolyPlanet:
                        + 'birth_land VARCHAR, birth_nation VARCHAR, '
                        + 'birth_planet VARCHAR, '
                        + 'str_chromosome_ids VARCHAR, land VARCHAR, '
-                       + 'generation INT, nation VARCHAR, planet VARCHAR, '
+                       + 'generation INT, nation VARCHAR, planet VARCHAR'
                       )
-            command = command[:-2] + ')'
             cur.execute(command)
             self.conn.commit()
         else:
@@ -314,6 +312,7 @@ class PolyLand:
         self.fraction_mutation = fraction_mutation
         self.mutation_sigma_offset = mutation_sigma_offset
         self.fraction_mutate_additional_block = fraction_mutate_additional_block
+        # TODO implement
         self.land_chromosomes = list(self.planet.chromosomes.keys())
 
     def add(self, nation: 'PolyNation'):
