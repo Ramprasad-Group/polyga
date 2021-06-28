@@ -15,7 +15,9 @@ If you already know a lot about GAs and only care about how polyga is
 implemented, see [polyga](#polyga).
 
 ### Genetic Algorithms
-To start, all genetic algorithms work based off the circle of life.
+All genetic algorithms work based off the circle of life.
+
+![GA-Circle-Of-Life](../imgs/circle-of-life.png)
 
 ### polyga
 
