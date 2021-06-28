@@ -91,8 +91,9 @@ df['chromosome_ids'] = [str_to_list(str_ids) for str_ids
 I wanted to replicate the way evolution occurs in nature. I thought it would be
 more fun to implement with the idea that the land you are in can affect
 a species' evolution, and the nation they live in can affect culture. For
-instance, people living in Australia have higher rates of skin cancer (mutation
-rate), and people in the U.S. are (typically) punctual (culture).
+instance, people living in Australia typically have higher rates of skin cancer 
+(mutation rate), and people in the U.S. are (typically) monogamous 
+(number of parents in a family). 
 
 ### How do I know which chromosomes are which?
 If you create your own dna list, you should keep access to it and refer back
