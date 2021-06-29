@@ -9,11 +9,11 @@
 It is the basic building block of all of nature. So to, will it be the basic
 building block of our algorithms. Here is what your dna list should look like
 
-`chromosome_id,chromosome,num_connections  
-0,[Bi]C[Bi],2  
-1,[Bi]CC([Bi])C,2  
-2,[Bi]CC([Bi])CC,2  
-3,[Bi]CC([Bi])CCC,2  
+`chromosome_id,chromosome,num_connections\\
+0,[Bi]C[Bi],2\\ 
+1,[Bi]CC([Bi])C,2\\
+2,[Bi]CC([Bi])CC,2\\ 
+3,[Bi]CC([Bi])CCC,2\\ 
 4,[Bi]CC([Bi])C(C)C,2  
 ...
 `
