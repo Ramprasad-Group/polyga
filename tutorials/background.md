@@ -3,8 +3,7 @@
 - [Home](../README.md)
 - Background
 - [How the DNA list works](dna.md)
-- [Analyzing your runs](accessing_old_runs.md)
-- [Example fitness functions](example_fitness_functions.md)
+- [Making a generative function](generative.md)
 
 ## Background 
 In this background I will explain two things: how genetic algorithms (GAs) work 
@@ -51,7 +50,7 @@ a lot of computing power and code to replicate, so our GA is likely going to
 be a much simpler.
 
 This was a very basic background, if you're still curious about GAs there
-is a lot more you can read, but I am more of a fan of doing :-).
+is a lot more you can read, but I suggest trying to use a GA first.
 
 ### Some caveats...
 
@@ -93,8 +92,7 @@ algorithm while also being able to do more advanced research for their specific
 task
 2. The user can generate islands with unique fitness functions, mutation rates,
 etc... then populate those islands with nations that have different selection
-schemes, family sizes, etc...
-  - This allows for two things
+schemes, family sizes, etc... This allows for two things:
     1. Migration can occur between nations, allow the user to create niches of
 desireable traits and then improve the properties of more complex fitness
 functions more quickly.

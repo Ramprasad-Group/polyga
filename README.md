@@ -27,6 +27,7 @@ get quickly started with the code. For more details on how the code works,
 please see the docs page or read the code!
 1. [Background](tutorials/background.md)
 2. [How the DNA list works](tutorial/dna.md)
+3. [Making a generative function](generative.md)
 
 ## Author
 Joseph Kern (jkern34@gatech.edu)
