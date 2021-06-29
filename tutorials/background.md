@@ -2,6 +2,7 @@
 ## Tutorial Navigation:
 - [Home](../README.md)
 - Background
+- [How the DNA list works](dna.md)
 - [Analyzing your runs](accessing_old_runs.md)
 - [Example fitness functions](example_fitness_functions.md)
 
@@ -71,8 +72,41 @@ schemes include single point crossover, double point, k-point, uniform, and
 more. Mutation schemes include displacement, simple inversion, scramble 
 mutation and more. My point is, polyga implements some of these and not
 others, as will most GAs you find out there. These will influence results, so
-I could keep in mind how any algorithm you use works if it doesn't seem to be
-effective. These might influence results.
+I would keep in mind how any algorithm you use works if it doesn't seem to be
+effective. These might influence results and you could try implementing
+a different scheme if you're not satisfied.
 
 ### polyga
+On to polyga. First, some basic information about its origin:
+1. It was designed to predict hypothetical polymers
+2. It was commonly integrated with machine learning models to assess fitness 
+functions
+3. It used single point crossover
+4. It used elite selection
+5. The mutation operator selected a random number of chromosome and changed them
+to new random chromosomes
 
+These are the basic points about the original implementation of polyga. The 
+new implementation has some additions added:
+1. The user can specify the dna and design scheme to make use of the basic
+algorithm while also being able to do more advanced research for their specific
+task
+2. The user can generate islands with unique fitness functions, mutation rates,
+etc... then populate those islands with nations that have different selection
+schemes, family sizes, etc...
+  - This allows for two things
+    1. Migration can occur between nations, allow the user to create niches of
+desireable traits and then improve the properties of more complex fitness
+functions more quickly.
+    2. Users run experiments with different hyperparameters concurently
+and assess their effects.
+3. Additional selection schemes are implemented as seen in the docs.
+
+In subsequent sections, I will explain how the dna list works and how to create
+your own, how the generative function should work, how fingerprinting and
+property prediction should work, how fitness functions should work, and then
+I will showcase some examples of the power of polyga with some followup
+tutorials.
+
+I know it sounds like a lot, but it will be fun!
+[On to the DNA list!](dna.md)

@@ -26,8 +26,7 @@ Each tutorial should only take around five minutes and is meant to help you
 get quickly started with the code. For more details on how the code works,
 please see the docs page or read the code!
 1. [Background](tutorials/background.md)
-2. [Analyzing your runs](tutorials/accessing_old_runs.md)
-3. [Example fitness functions](tutorials/example_fitness_functions.md)
+2. [How the DNA list works](tutorial/dna.md)
 
 ## Author
 Joseph Kern (jkern34@gatech.edu)
