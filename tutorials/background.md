@@ -28,7 +28,7 @@ Thus, only brown bears breed during the next "crossover" phase.
 
 In this phase, animals (or polymers) breed, exchanging genetic material and
 creating new children, potentially more suited to the new environment. In 
-nature, this crossover is of genes, but this it is different depending on
+nature, this crossover is of genes, but for us it will depend on
 the design task. For instance, GAs can be used to tune hyperparameters of 
 machine learning models, in which case the values of those 
 hyperparameters are "crossed over" or mixed. For polymers, chemically unique 
@@ -38,10 +38,41 @@ features of both parents.
 
 ![Polymer-Cross-Over](../imgs/crossover.png)
 
-### polyga
+After crossover, mutation occurs. In this phase, some genes in an animal are
+mutated, causing potentially beneficial adaptions to occur. In the case of our
+brown bears, they now grow antlers, which admitedly might not be very useful,
+but they sure are easy to make cartoons of!
 
-In order to facilitate usage as a general algorithm as opposed to one 
-specialized for polymers, it requires a small amount of work on your part. 
-However, if you're like me, you really enjoy programming, so I think this will
-be fun!
+Finally, each child is ranked according to some fitness function. In real life,
+this fitness function is a complex function of the predators in an 
+environment, terrain, disease, culture and more. Obviously this would require
+a lot of computing power and code to replicate, so our GA is likely going to
+be a much simpler.
+
+This was a very basic background, if you're still curious about GAs there
+is a lot more you can read, but I am more of a fan of doing :-).
+
+### Some caveats...
+
+I promise we'll get to polyga soon, but I need to stress a few points first.
+#### 1. GAs tend to not generate diverse solutions
+Once a basic GA finds a space that achieves the target, it tends to get stuck. 
+It doesn't explore a wide space anymore, staying in the local optimum.
+
+#### 2. GAs can generate unrealistic results
+I've found that if you don't add some restrictions or way to assess realism,
+they can make some wild polymers. I'm sure this is the case for other design
+problems as well.
+
+#### 3. GAs have a lot of possible selection, crossover, and mutation schemes
+Selection techniques include things like  elitest selection, 
+stochastic sampling, roulette wheel, tournament selection and more. Crossover
+schemes include single point crossover, double point, k-point, uniform, and 
+more. Mutation schemes include displacement, simple inversion, scramble 
+mutation and more. My point is, polyga implements some of these and not
+others, as will most GAs you find out there. These will influence results, so
+I could keep in mind how any algorithm you use works if it doesn't seem to be
+effective. These might influence results.
+
+### polyga
 
