@@ -20,5 +20,6 @@ chromosome_id,chromosome,num_connections
 
 That's it. It's a simple csv file with three headers. However, when combined 
 with a generative function, a lot of use can come from these simple blocks
-of dna. Now, let's [learn about generative functions.](generative.md)
+of dna. If you want, you can view the dna.csv list provided by the code
+by looking in polyga/default\_files. Now, let's [learn about generative functions.](generative.md)
 

@@ -7,4 +7,5 @@ Sphinx-docs/*
 .*
 **/.*
 !/.gitignore
-
+silly_test/Planet_Silly/
+silly_test/Planet_Silly/*

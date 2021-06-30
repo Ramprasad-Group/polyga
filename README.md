@@ -21,16 +21,26 @@ source code page.
 
 
 
-## Tutorials
-Each tutorial should only take around five minutes and is meant to help you
-get quickly started with the code. For more details on how the code works,
-please see the docs page or read the code!
-1. [Background](tutorials/background.md)
-2. [How the DNA list works](tutorial/dna.md)
-3. [Making a generative function](generative.md)
+## Basic Tutorials
+1. [Running a basic polyga](tutorials/basic.md)
+2. [Fingerprinting function](tutorials/fingerprinting.md)
+3. [Prediction of properties](tutorials/predict.md)
+4. [Creating fitness functions](tutorials/fitness.md)
+5. [Running an advanced polyga](tutorials/advanced.md) 
+
+## Advanced Tutorials
+1. [How the DNA list works](tutorials/dna.md)
+2. [Making a generative function](tutorials/generative.md)
+
+## Background
+1. [Genetic Algorithms](background/ga.md)
+2. [polyga](background/polyga.md)
 
 ## Author
-Joseph Kern (jkern34@gatech.edu)
+Joseph Kern (jkern34@gatech.edu)  
+Author of original GA:  
+Chiho Kim (chiho80@gmail.com)
+
 
 ## FAQ
 ### I think you should add a cool new feature, can you?

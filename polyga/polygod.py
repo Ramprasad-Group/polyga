@@ -602,7 +602,7 @@ class PolyNation:
                                                       self.land.name))
         # Reassess fitness here due to emigration.
         st = time()
-        self.__assess_fitness()
+        self.population = self.land.fitness_function(self.population.copy())
         if narrate:
             print('The polymers of {} worked for {} polyears.'.format(
                self.name, round((time() - st), 4))) 
@@ -654,7 +654,7 @@ class PolyNation:
             print('The polymers of {} took {} polyyears to graduate college.'.format(
                self.name, round((time() - st), 4))) 
         st = time()
-        self.__assess_fitness()
+        self.population = self.land.fitness_function(self.population.copy())
         if narrate:
             print('The polymers of {} worked for {} polyyears.'.format(
                self.name, round((time() - st), 4))) 
@@ -704,16 +704,6 @@ class PolyNation:
                                      self.land.planet.conn, index=False,
                                      if_exists='append')
 
-    def __assess_fitness(self):
-        """Assess fitness of polymers based on user passed fitness function.
-
-           Fitness function taken from land polymers exist on.
-        """
-        self.population['fitness'] = self.land.fitness_function(
-                                        self.population.copy()
-                                                               )
-
-        
     def __crossover(self, families):
         """Performs crossover on polymers and returns resulting chromosome_id
            lists for mutation
