@@ -648,7 +648,8 @@ class PolyNation:
                self.name, round((time() - st), 4))) 
         st = time()
         self.population = (
-                self.land.planet.predict_function(self.population.copy())
+                self.land.planet.predict_function(self.population.copy(),
+                    self.__fp_headers)
         )
         if narrate:
             print('The polymers of {} took {} polyyears to graduate college.'.format(
@@ -690,6 +691,7 @@ class PolyNation:
         # Add new fingerprint headers to database
         add_cols = [col for col in cols if col 
                     not in existing_db_cols]
+        print(add_cols)
         for col in add_cols:
             self.land.planet.database_cols.append(col)
             command = (
