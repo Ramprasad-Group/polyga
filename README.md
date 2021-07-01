@@ -19,16 +19,16 @@ or
 ### Anaconda install
 1. `conda create -n polyga python=3.7` 
 2. `conda activate polyga`
-3. [Run pip install](pip-install)
+3. [Run pip install](#pip-install)
 
 
 
 ## Basic Tutorials
 1. [Running polyga](tutorials/basic/basic.md)
-2. [Fingerprinting function](tutorials/basic/fingerprinting.md)
-3. [Prediction of properties](tutorials/basic/predict.md)
+2. [Prediction of properties](tutorials/basic/predict.md)
+3. [Fingerprinting function](tutorials/basic/fingerprinting.md)
 4. [Creating fitness functions](tutorials/basic/fitness.md)
-5. [Running an advanced polyga](tutorials/basic/advanced.md) 
+5. [Analyzing polyga run](tutorials/basic/analyzing.md) 
 
 ## Advanced Tutorials
 1. [How the DNA list works](tutorials/dna.md)

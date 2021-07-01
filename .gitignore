@@ -7,3 +7,6 @@ Sphinx-docs/*
 !/.gitignore
 silly_test/Planet_Silly/
 silly_test/Planet_Silly/*
+__pycache__/
+**/__pycache__/
+**/__pycache__/*

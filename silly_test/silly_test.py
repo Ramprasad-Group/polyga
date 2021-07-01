@@ -12,12 +12,13 @@ land = pg.PolyLand('Awesomeland', planet,
         generative_function=utils.chromosome_ids_to_smiles,
         fitness_function=silly_utils.make_coolest_funniest_smartest_polymer
         )
+
 nation = pg.PolyNation('UnitedPolymersOfCool', land, selection_scheme='elite', 
                        partner_selection='diversity', 
                        num_population_initial=180,
                        )
 
-for i in range(100):
+for i in range(10):
     planet.advance_time()
 
 planet.complete_run()

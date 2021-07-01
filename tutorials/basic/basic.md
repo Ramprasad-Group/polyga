@@ -2,13 +2,150 @@
 ## Navigation
 - [Front Page](../../README.md)
 - [Running polyga](basic.md)
-- [Fingerprinting function](fingerprinting.md)
 - [Prediction of properties](predict.md)
+- [Fingerprinting function](fingerprinting.md)
 - [Creating fitness functions](fitness.md)
-- [Running an advanced polyga](advanced.md) 
+- [Analyzing polyga run](analyzing.md) 
 
 ## Running polyga
-In this tutorial we will learn how to run polyga. To start, download the
-[silly\_test folder](../../silly_test) from the github page.
+In this tutorial we will learn how to run polyga. 
+After running the [pip install](../../README.md/#pip-install) instructions
+for polyga, download the zip folder for polyga by clicking the green "code" 
+button and move the silly\_test folder to your working directory after 
+downloading.
 
+You working directory should look something like this
+
+`
++--My_directory/  
+|  +--silly_test/  
+|    +--silly_test.py
+|    +--additional_requirements.txt  
+|    +--examples/  
+|      +--Polymer_Coolness_random-forest.pkl  
+|      +--Polymer_Funnyness_random-forest.pkl  
+|      +--Polymer_Funnyness_random-forest.pkl  
+|      +--silly_utils.py
+`
+
+Pip install the dependencies in additional\_requirements.txt, as these
+are required to open the random-forest example models I have created.
+
+After, cd into the silly\_test folder and run `python silly_test.py`.
+It should run ten generations of polyga.
+
+If you silly\_test.py you'll see the following code:
+```Python
+from polyga import polygod as pg
+from polyga import utils 
+
+from examples import silly_utils
+
+planet = pg.PolyPlanet('Planet_Silly', 
+        predict_function=silly_utils.silly_property_prediction,
+        fingerprint_function=silly_utils.silly_fingerprint
+        )
+
+land = pg.PolyLand('Awesomeland', planet, 
+        generative_function=utils.chromosome_ids_to_smiles,
+        fitness_function=silly_utils.make_coolest_funniest_smartest_polymer
+        )
+
+nation = pg.PolyNation('UnitedPolymersOfCool', land, selection_scheme='elite', 
+                       partner_selection='diversity', 
+                       num_population_initial=180,
+                       )
+
+for i in range(10):
+    planet.advance_time()
+
+planet.complete_run()
+```
+
+To start, the script imports polyga and it's utility functions (polyga.utils),
+then imports some special functions I wrote for this example.
+```Python
+from polyga import polygod as pg
+from polyga import utils 
+
+from examples import silly_utils
+```
+
+Next, we create the planet our lands and nations will reside on.
+```Python
+planet = pg.PolyPlanet('Planet_Silly', 
+        predict_function=silly_utils.silly_property_prediction,
+        fingerprint_function=silly_utils.silly_fingerprint
+        )
+```
+
+We first name our planet 'Planet\_Silly' because, as you'll see in the future,
+the data we generate is nonesense. Next, we specify the function we'll use
+to predict polymer properties, and the function we'll use to generate polymer
+fingerprints (we'll looking into these more closely in a later tutorial).
+
+Now that our planet is set up, we add a land:
+```Python
+land = pg.PolyLand('Awesomeland', planet, 
+        generative_function=utils.chromosome_ids_to_smiles,
+        fitness_function=silly_utils.make_coolest_funniest_smartest_polymer
+        )
+```
+
+We can add as many lands as we want, but in this example, we'll only make one.
+We create a name for this land, 'Awesomeland', and associate it with the planet
+we just created. Here we also define the generative function that will
+create our polymers, and the fitness function that will rank them. Once again,
+we'll expand upon these in a later tutorial.
+
+Next we create a nation on our land:
+```Python
+nation = pg.PolyNation('UnitedPolymersOfCool', land, selection_scheme='elite', 
+                       partner_selection='diversity', 
+                       num_population_initial=180,
+                       )
+```
+
+Like our planet and land, we name our nation. Then we associate it with the
+land (and by extension, the planet). We choose an elite selection scheme and
+diversity partner selection for this nation. The selection scheme determines
+how polymers for each generation will be chosen (elite meaning only the highest
+scoring polymers will breed), while partner selection
+indicates how a polymer will choose who it mates with. 'diversity' means it
+will mate with the selected polymers that are least similar to it according to
+its tanimoto similarity score.
+Other options are available for these parameters and listed in the 
+[docs](../../docs).
+
+An arbitrary number of nations and lands can be created on each planet. When we
+explore migration, we will see why this can be useful.
+
+Finally, we run polyga:
+```Python
+for i in range(10):
+    planet.advance_time()
+
+planet.complete_run()
+```
+
+Each time we call planet.advance\_time(), a new generation is created and an
+old one dies. After we're finished, we run planet.complete\_run() to close
+our planet's sqlite database connection.
+
+After the example runs you should see a new folder in silly\_test
+`
++--My_directory/  
+|  +--silly_test/  
+|    +--silly_test.py
+|    +--additional_requirements.txt  
+|    +--examples/  
+|      +--Polymer_Coolness_random-forest.pkl  
+|      +--Polymer_Funnyness_random-forest.pkl  
+|      +--Polymer_Funnyness_random-forest.pkl  
+|      +--silly_utils.py
+|    +--Planet_Silly/
+|      +--planetary_database.sqlite
+`
+Our planet has been created along with an sqlite database to save each 
+generation of our planet.
 
