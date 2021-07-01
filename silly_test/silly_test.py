@@ -17,7 +17,7 @@ nation = pg.PolyNation('UnitedPolymersOfCool', land, selection_scheme='elite',
                        num_population_initial=180,
                        )
 
-for i in range(5):
+for i in range(100):
     planet.advance_time()
 
 planet.complete_run()
