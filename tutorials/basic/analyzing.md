@@ -10,8 +10,10 @@
 ## Analyzing polyga run
 After running polyga, we want to analyze the polymers (or other materials)
 we have created. To start, let's run the 'analyze\_silly\_test.py' script in 
-the silly\_test folder by typing `python analyze_silly_test.py`
-(to see how your directory should look, see the [previous tutorial](basic.md).
+the silly\_test folder by running the command  
+`python analyze_silly_test.py`  
+in the terminal
+(to see how your directory should look, see the [previous tutorial](basic.md)).
 
 First, the follwing data should print to the terminal.
 
