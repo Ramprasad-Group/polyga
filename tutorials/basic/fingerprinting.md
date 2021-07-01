@@ -141,5 +141,10 @@ headers.
     return fp_df, fp_headers
 ```
 
-To summarize:
-1. We created a function that takes in a dataframe and 
+To summarize steps one needs to take to create a fingerprinting function:
+1. We created a function that takes in the polyga child dataframe
+2. We looked at each smiles and created a unique rdkit fingerprint
+3. We saved the original columns in the dataframe and the new fingerprints
+4. We returned this new dataframe **and the fingerprint headers**
+
+Each of this steps must be taken when creating a fingerprinting function.
