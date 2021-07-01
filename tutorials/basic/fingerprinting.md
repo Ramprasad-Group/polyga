@@ -147,4 +147,6 @@ To summarize steps one needs to take to create a fingerprinting function:
 3. We saved the original columns in the dataframe and the new fingerprints
 4. We returned this new dataframe **and the fingerprint headers**
 
-Each of this steps must be taken when creating a fingerprinting function.
+Each of this steps must be taken when creating a fingerprinting function. Let's
+move on to the final section of the basic tutorial, [creating fitness 
+functions](fitness.md).

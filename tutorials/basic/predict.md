@@ -113,7 +113,7 @@ return it back to polyga.
     return df
 ```
 
-To summarize:
+To summarize steps one would need to take to predict properties:
 1. We defined a function where the first parameter was the child dataframe and
 the second were the fingerprint headers in the dataframe
 2. We opened our models, manually knowing where they were located in our
