@@ -95,9 +95,16 @@ in a dictionary with the property name as the key and the model as the value.
 ```
 
 Now, I create a dictionary of lists and predict all the properties for each
-polymer. One *CRITICAL* thing to note is polyga will always pass a hard copy of
+polymer. One **CRITICAL** thing to note is polyga will always pass a hard copy of
 the child dataframe as the first parameter and fingerprint headers to the 
-prediction function as the second.
+prediction function as the second:
+```Python
+def silly_property_prediction(df, fp_headers):
+```
+Hence, these two parameters in the created function.
+
+Finally, we save all the property values to the original dataframe and
+return it back to polyga.
 
 ```Python
     for key in prop_values.keys():
@@ -105,8 +112,6 @@ prediction function as the second.
     
     return df
 ```
-Finally, we save all the property values to the original dataframe and
-return it back to polyga.
 
 To summarize:
 1. We defined a function where the first parameter was the child dataframe and
@@ -115,7 +120,7 @@ the second were the fingerprint headers in the dataframe
 harddrive
 3. We predicted the properties for each polymer and saved them in the original
 dataframe
-4. We *PASSED BACK* the original datafame + those properties added. It is 
+4. We **PASSED BACK** the original datafame + those properties added. It is 
 critical you do this.
 
 If you had your own models, you would write the code to import them and
