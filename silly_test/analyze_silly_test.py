@@ -1,11 +1,9 @@
 import os
-import sys
 import sqlite3
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from collections import defaultdict
 
 save_loc = 'Planet_Silly'
 conn = sqlite3.connect(os.path.join(save_loc, 
