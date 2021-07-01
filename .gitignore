@@ -1,7 +1,5 @@
 /developer_requirements.txt
 /create_markdown_guide.html
-examples/
-examples/*
 Sphinx-docs/
 Sphinx-docs/*
 .*

@@ -24,11 +24,11 @@ or
 
 
 ## Basic Tutorials
-1. [Running a basic polyga](tutorials/basic.md)
-2. [Fingerprinting function](tutorials/fingerprinting.md)
-3. [Prediction of properties](tutorials/predict.md)
-4. [Creating fitness functions](tutorials/fitness.md)
-5. [Running an advanced polyga](tutorials/advanced.md) 
+1. [Running polyga](tutorials/basic/basic.md)
+2. [Fingerprinting function](tutorials/basic/fingerprinting.md)
+3. [Prediction of properties](tutorials/basic/predict.md)
+4. [Creating fitness functions](tutorials/basic/fitness.md)
+5. [Running an advanced polyga](tutorials/basic/advanced.md) 
 
 ## Advanced Tutorials
 1. [How the DNA list works](tutorials/dna.md)
