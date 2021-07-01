@@ -3,6 +3,7 @@ import os
 import sys
 from time import time
 import sqlite3
+import math
 
 import pandas as pd
 import numpy as np
@@ -113,14 +114,10 @@ class PolyPlanet:
             self.save_folder = os.path.join(os.getcwd(), self.name)
         if not os.path.exists(self.save_folder):
             os.mkdir(self.save_folder)
-        #TODO REMOVE
-        self.hdf5_file = os.path.join(self.save_folder, 
-                                     'planetary_database.h5')
-        """
+
         self.database = os.path.join(self.save_folder, 
                                      'planetary_database.sqlite')
         self.__initialize_database()
-        """
         
 
     def add(self, land: 'PolyLand'):
@@ -236,7 +233,7 @@ class PolyPlanet:
         if not os.path.exists(self.database):
             self.conn = sqlite3.connect(self.database)
             cur = self.conn.cursor()
-            command = ('CREATE TABLE planetary_database (planetary_id INT, '
+            command = ('CREATE TABLE occupants (planetary_id INT, '
                        + 'parent_1_id INT, parent_2_id INT, is_parent INT, '
                        + 'num_chromosomes INT, ' 
                        + 'smiles_string VARCHAR, '
@@ -246,9 +243,20 @@ class PolyPlanet:
                        + 'generation INT, nation VARCHAR, planet VARCHAR)'
                       )
             cur.execute(command)
+            command = ('CREATE TABLE fingerprints_1 (planetary_id INT)')
+            cur.execute(command)
             self.conn.commit()
+            self.fingerprint_tables = ['fingerprints_1']
         else:
             self.conn = sqlite3.connect(self.database)
+            cur = self.conn.cursor()
+            cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
+            tables = cur.fetchall()
+            self.fingerprint_tables = []
+            for i in range(len(tables)):
+                if i != 0:
+                    table = tables[i][0]
+                    self.fingerprint_tables.append(table)
 
 
 
@@ -690,29 +698,88 @@ class PolyNation:
                 'chromosome_ids' and col != 'fitness' 
                 and col != 'immigration_loc']
         
-        # TODO removee
-        """
         cur = self.land.planet.conn.cursor()
-        cur.execute("select * from planetary_database")
+        # Add new property columns to occupants table
+        cur.execute("select * from occupants")
         existing_db_cols = [i[0] for i in cur.description] 
-        # Add new fingerprint headers to database
         add_cols = [col for col in cols if col 
-                    not in existing_db_cols]
-        print(add_cols)
+                    not in existing_db_cols and col not in self.__fp_headers]
         for col in add_cols:
             self.land.planet.database_cols.append(col)
             command = (
-                        'ALTER TABLE planetary_database ADD COLUMN ' + col + 
+                        'ALTER TABLE occupants ADD COLUMN ' + col + 
                         ' FLOAT'
                       )
             cur.execute(command)
             self.land.planet.conn.commit()
-        self.population[cols].to_sql('planetary_database', 
+        save_cols = [col for col in cols if col not in self.__fp_headers]
+        self.population[save_cols].to_sql('occupants', 
                                      self.land.planet.conn, index=False,
                                      if_exists='append')
-        """
-        self.population[cols].to_hdf(self.land.planet.hdf5_file, key='df', 
-                mode='a')
+
+        # Each table can only have 2000 columns, so we add additional
+        # fp tables if we need more
+        num_fp_tables = len(self.land.planet.fingerprint_tables)
+        fps_in_tables = {}
+        fps_total = []
+        fp_to_add = self.__fp_headers.copy()
+        # Find all current fingerprints per table
+        for table_id in range(num_fp_tables):
+            table = self.land.planet.fingerprint_tables[table_id]
+            # Add new fingerprint headers to fingerprint table
+            cur.execute("select * from " + table)
+            existing_db_cols = [i[0] for i in cur.description] 
+            fps_total.extend(existing_db_cols)
+            fps_in_tables[table_id] = existing_db_cols
+
+        # Determine how many additional fingerprints need to be added
+        tot_fp_to_add = [col for col in fp_to_add if col not in fps_total]
+
+        # Create new tables if number of fingerprints that need to be added
+        # cause latest table to exceed 2000 columns
+        if len(tot_fp_to_add) + len(fps_in_tables[num_fp_tables-1]) > 2000:
+            num_fps_for_tables = (len(tot_fp_to_add) 
+                                  - (2000 - len(fps_in_tables[num_fp_tables-1]))
+                                 )
+            num_new_tables = math.ceil(num_fps_for_tables/2000)
+            # Have to consider id column will be added for each new table
+            num_fps_for_tables += num_new_tables
+            num_new_tables = math.ceil(num_fps_for_tables/2000)
+            for i in range(num_new_tables):
+                fps_in_tables[num_fp_tables] = ['planetary_id']
+                num_fp_tables += 1
+                table = 'fingerprints_' + str(num_fp_tables)
+                command = ('CREATE TABLE ' + table + ' (planetary_id INT)')
+                self.land.planet.fingerprint_tables.append(table)
+                cur.execute(command)
+
+        # Add new fingerprints to tables
+        for table_id in fps_in_tables:
+            table = self.land.planet.fingerprint_tables[table_id]
+            fps = fps_in_tables[table_id]
+            # Figure out which columns need to be added to table
+            fp_to_add = [col for col in fp_to_add if col not in fps]
+            add_cols = []
+            for fp in fp_to_add:
+                if len(fps) < 2000:
+                    fps.append(fp)
+                    add_cols.append(fp)
+                else:
+                    break
+            # Remove fingerprints added to fps
+            fp_to_add = [col for col in fp_to_add if col not in fps]
+            for col in add_cols:
+                self.land.planet.database_cols.append(col)
+                command = (
+                            'ALTER TABLE ' + table + ' ADD COLUMN ' + col + 
+                            ' FLOAT'
+                          )
+                cur.execute(command)
+                self.land.planet.conn.commit()
+            fps = [col for col in fps if col in self.__fp_headers]
+            self.population[fps].to_sql(table, 
+                self.land.planet.conn, index=False, if_exists='append'
+                )
 
     def __crossover(self, families):
         """Performs crossover on polymers and returns resulting chromosome_id
