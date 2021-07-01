@@ -16,7 +16,8 @@ downloading.
 
 You working directory should look something like this
 
-`
+```
+.
 +--My_directory/  
 |  +--silly_test/  
 |    +--silly_test.py
@@ -26,7 +27,7 @@ You working directory should look something like this
 |      +--Polymer_Funnyness_random-forest.pkl  
 |      +--Polymer_Funnyness_random-forest.pkl  
 |      +--silly_utils.py
-`
+```
 
 Pip install the dependencies in additional\_requirements.txt, as these
 are required to open the random-forest example models I have created.
@@ -133,7 +134,8 @@ old one dies. After we're finished, we run planet.complete\_run() to close
 our planet's sqlite database connection.
 
 After the example runs you should see a new folder in silly\_test
-`
+```
+.
 +--My_directory/  
 |  +--silly_test/  
 |    +--silly_test.py
@@ -145,7 +147,7 @@ After the example runs you should see a new folder in silly\_test
 |      +--silly_utils.py
 |    +--Planet_Silly/
 |      +--planetary_database.sqlite
-`
+```
 Our planet has been created along with an sqlite database to save each 
 generation of our planet.
 
