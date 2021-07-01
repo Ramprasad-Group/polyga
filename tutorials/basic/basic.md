@@ -6,6 +6,7 @@
 - [Prediction of properties](predict.md)
 - [Fingerprinting function](fingerprinting.md)
 - [Creating fitness functions](fitness.md)
+- [(OPTIONAL) tutorial background](background.md)
 
 ## Running polyga
 In this tutorial we will learn how to run polyga. 

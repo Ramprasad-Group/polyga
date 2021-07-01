@@ -29,6 +29,7 @@ or
 3. [Prediction of properties](tutorials/basic/predict.md)
 4. [Fingerprinting function](tutorials/basic/fingerprinting.md)
 5. [Creating fitness functions](tutorials/basic/fitness.md)
+6. [(OPTIONAL) tutorial background](background.md)
 
 ## Advanced Tutorials
 1. [How the DNA list works](tutorials/dna.md)

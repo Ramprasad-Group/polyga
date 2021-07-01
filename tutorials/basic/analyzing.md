@@ -6,6 +6,7 @@
 - [Prediction of properties](predict.md)
 - [Fingerprinting function](fingerprinting.md)
 - [Creating fitness functions](fitness.md)
+- [(OPTIONAL) tutorial background](background.md)
 
 ## Analyzing polyga run
 After running polyga, we want to analyze the polymers (or other materials)
@@ -238,8 +239,8 @@ property columns. These will depend on the properties you are using.
 The rest of the code should be relatively self explanatory, so I'll leave
 that for you to read. There are a lot of analyses you could run on your results
 including uniform manifold approximation and projection maps, an analysis of
-chemical composition vs generation, frequency of blocks, so I did not include
-all possible analyses here.
+chemical composition vs generation, frequency of blocks, etc... 
+so I did not include all possible analyses here.
 
 For now, let's go more in depth into 
-[how we predicted the polymer properties](predict.md)
+[how we predicted the polymer properties](predict.md).
