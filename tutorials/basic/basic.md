@@ -2,10 +2,10 @@
 ## Navigation
 - [Front Page](../../README.md)
 - [Running polyga](basic.md)
+- [Analyzing polyga run](analyzing.md) 
 - [Prediction of properties](predict.md)
 - [Fingerprinting function](fingerprinting.md)
 - [Creating fitness functions](fitness.md)
-- [Analyzing polyga run](analyzing.md) 
 
 ## Running polyga
 In this tutorial we will learn how to run polyga. 
@@ -21,6 +21,7 @@ You working directory should look something like this
 +--My_directory/  
 |  +--silly_test/  
 |    +--silly_test.py
+|    +--analyze_silly_test.py
 |    +--additional_requirements.txt  
 |    +--examples/  
 |      +--Polymer_Coolness_random-forest.pkl  
@@ -35,7 +36,7 @@ are required to open the random-forest example models I have created.
 After, cd into the silly\_test folder and run `python silly_test.py`.
 It should run ten generations of polyga.
 
-If you silly\_test.py you'll see the following code:
+If you open silly\_test.py you'll see the following code:
 ```Python
 from polyga import polygod as pg
 from polyga import utils 
@@ -63,8 +64,8 @@ for i in range(10):
 planet.complete_run()
 ```
 
-To start, the script imports polyga and it's utility functions (polyga.utils),
-then imports some special functions I wrote for this example.
+To start, we import polyga and it's utility functions (polyga.utils),
+then import some special functions I wrote for this example.
 ```Python
 from polyga import polygod as pg
 from polyga import utils 
@@ -139,6 +140,7 @@ After the example runs you should see a new folder in silly\_test
 +--My_directory/  
 |  +--silly_test/  
 |    +--silly_test.py
+|    +--analyze_silly_test.py
 |    +--additional_requirements.txt  
 |    +--examples/  
 |      +--Polymer_Coolness_random-forest.pkl  
@@ -151,3 +153,4 @@ After the example runs you should see a new folder in silly\_test
 Our planet has been created along with an sqlite database to save each 
 generation of our planet.
 
+Next, [let's analyze the polymers created by this run of polyga](analyzing.md).
