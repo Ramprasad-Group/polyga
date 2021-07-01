@@ -12,12 +12,14 @@ If you run into any issues, post an issue in the "Issues" tab on the github
 source code page.
 
 ### pip install
-1. `pip install git+https://github.com/jdkern11/polyga.git`
+`pip install git+https://github.com/jdkern11/polyga.git`  
+or  
+`pip install git+ssh://git@github.com:jdkern11/polyga.git`
 
 ### Anaconda install
 1. `conda create -n polyga python=3.7` 
 2. `conda activate polyga`
-3. `pip install git+https://github.com/jdkern11/polyga.git`
+3. [Run pip install](pip-install)
 
 
 
