@@ -39,7 +39,8 @@ Polymer_Funnyness
 ```
 
 If we open the Silly\_Test folder we should see some images as well. The first
-one should look like this.  
+one should look something like this, although, GAs are heuristic models so
+your results may vary.  
 ![properties image](../../imgs/UnitedPolymersOfCool_property_avgs.png)
 
 In this image, the darkred line is the average property value per polymer at
@@ -105,7 +106,9 @@ def plot_average_lengths(df):
             means.append(mean)
         plt.plot(x, means)
         legend.append(nation)
-    plt.legend(legend)
+    plt.ylabel('Number of Blocks')
+    plt.xlabel('Generation')
+    plt.legend(legend, title='avg_num_blocks_per_polymer')
     plt.savefig(save_loc + '/length_avg.png')
     plt.clf()
 
