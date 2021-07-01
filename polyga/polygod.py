@@ -113,9 +113,14 @@ class PolyPlanet:
             self.save_folder = os.path.join(os.getcwd(), self.name)
         if not os.path.exists(self.save_folder):
             os.mkdir(self.save_folder)
+        #TODO REMOVE
+        self.hdf5_file = os.path.join(self.save_folder, 
+                                     'planetary_database.h5')
+        """
         self.database = os.path.join(self.save_folder, 
                                      'planetary_database.sqlite')
         self.__initialize_database()
+        """
         
 
     def add(self, land: 'PolyLand'):
@@ -232,7 +237,7 @@ class PolyPlanet:
             self.conn = sqlite3.connect(self.database)
             cur = self.conn.cursor()
             command = ('CREATE TABLE planetary_database (planetary_id INT, '
-                       + 'parent_1_id INT, parent_2_id INT, '
+                       + 'parent_1_id INT, parent_2_id INT, is_parent INT, '
                        + 'num_chromosomes INT, ' 
                        + 'smiles_string VARCHAR, '
                        + 'birth_land VARCHAR, birth_nation VARCHAR, '
@@ -685,6 +690,8 @@ class PolyNation:
                 'chromosome_ids' and col != 'fitness' 
                 and col != 'immigration_loc']
         
+        # TODO removee
+        """
         cur = self.land.planet.conn.cursor()
         cur.execute("select * from planetary_database")
         existing_db_cols = [i[0] for i in cur.description] 
@@ -700,11 +707,12 @@ class PolyNation:
                       )
             cur.execute(command)
             self.land.planet.conn.commit()
-
-
         self.population[cols].to_sql('planetary_database', 
                                      self.land.planet.conn, index=False,
                                      if_exists='append')
+        """
+        self.population[cols].to_hdf(self.land.planet.hdf5_file, key='df', 
+                mode='a')
 
     def __crossover(self, families):
         """Performs crossover on polymers and returns resulting chromosome_id
