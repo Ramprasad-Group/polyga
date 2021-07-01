@@ -53,14 +53,26 @@ def plot_property_averages(df):
     properties = ['Polymer_Coolness', 'Polymer_Funnyness','Polymer_Intelligence']
     nations = np.unique(df.nation.values)
     for nation in nations:
-        vals = []
+        means = []
+        maxes = []
+        mins = []
+        stds = []
         tdf = df.loc[df.nation == nation]
         for prop in properties:
-            val = []
+            mean = []
+            std = []
+            max_ = []
+            min_ = []
             for i in range(max(tdf.generation) + 1):
                 tdf_ = tdf.loc[tdf['generation'] == i]
-                val.append(tdf_[prop].mean())
-            vals.append(val)
+                mean.append(tdf_[prop].mean())
+                std.append(tdf_[prop].std())
+                max_.append(max(tdf_[prop]))
+                min_.append(min(tdf_[prop]))
+            means.append(mean)
+            stds.append(std)
+            maxes.append(max_)
+            mins.append(min_)
 
         fig, axes = plt.subplots(nrows=2, ncols=2, figsize=[16,9])
         x = np.linspace(0, max(tdf.generation), max(tdf.generation)+1)
@@ -69,7 +81,19 @@ def plot_property_averages(df):
         col = 0
         curr = 0
         for prop in properties:
-            axes[row][col].plot(x, vals[curr], lw=2, c='darkred')
+            max_ = maxes[curr]
+            min_ = mins[curr]
+            mean = means[curr]
+            std = stds[curr]
+            upper = [mean[i] + std[i] for i in range(len(mean))]
+            lower = [mean[i] - std[i] for i in range(len(mean))]
+            axes[row][col].fill_between(x, min_, max_, alpha=0.5, 
+                color='darkblue'
+            )
+            axes[row][col].fill_between(x, lower, upper, alpha=0.5, 
+                color='lightblue'
+            )
+            axes[row][col].plot(x, means[curr], lw=2, c='darkred')
             axes[row][col].set_ylabel(prop)
             axes[row][col].set_xlim([1,max(tdf.generation)+1])
             axes[row][col].set_xscale("log")
