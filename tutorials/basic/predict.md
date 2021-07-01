@@ -124,5 +124,7 @@ dataframe
 critical you do this.
 
 If you had your own models, you would write the code to import them and
-make predictions yourself. What we'll do next is [go into how we created these
-fingerprints](fingerprinting.md).
+make predictions yourself. Note, you don't technically need machine learning 
+based models, this is just what I typically use.
+Next is [go into how we created the fingerprints for the
+models](fingerprinting.md).
