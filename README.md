@@ -40,7 +40,7 @@ or
 
 ## Author
 Joseph Kern (jkern34@gatech.edu)  
-Author of original GA:  
+### Author of original GA
 Chiho Kim (chiho80@gmail.com)
 
 
@@ -78,6 +78,10 @@ constant, so even though I could find a way to increase it, I felt it would make
 general usage of the code harder. Thus, if you have more than 1999 fingerprints
 per object (with 1 column for indices), you will have more fingerprint tables.
 
+fingerprint tables are named 'fingerprints\_T#' with number being the number
+of the table (i.e., T1, T2...). If you know you have less than 1999 
+fingerprints, the only table will be 'fingerprints\_T1
+
 To determine how many fingerprint tables you have you can use the following
 code:
 ```Python
@@ -98,7 +102,7 @@ for i in range(len(tables)):
 This could be because you've generated a lot of polymers. I've found it can
 take a minute or two to load when I have over 100,000 polymers. 
 
-### How come when I load the sql database, the chromosome list is a string?
+### Why is the chromosome list a string when I load the database?
 SQL can't easily store a list in a database. I made the choice to store the list
 as a string, as it is easy to reconvert it back to a list from a string. To do
 so you can run the following code:

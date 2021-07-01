@@ -243,10 +243,10 @@ class PolyPlanet:
                        + 'generation INT, nation VARCHAR, planet VARCHAR)'
                       )
             cur.execute(command)
-            command = ('CREATE TABLE fingerprints_1 (planetary_id INT)')
+            command = ('CREATE TABLE fingerprints_T1 (planetary_id INT)')
             cur.execute(command)
             self.conn.commit()
-            self.fingerprint_tables = ['fingerprints_1']
+            self.fingerprint_tables = ['fingerprints_T1']
         else:
             self.conn = sqlite3.connect(self.database)
             cur = self.conn.cursor()
@@ -748,7 +748,7 @@ class PolyNation:
             for i in range(num_new_tables):
                 fps_in_tables[num_fp_tables] = ['planetary_id']
                 num_fp_tables += 1
-                table = 'fingerprints_' + str(num_fp_tables)
+                table = 'fingerprints_T' + str(num_fp_tables)
                 command = ('CREATE TABLE ' + table + ' (planetary_id INT)')
                 self.land.planet.fingerprint_tables.append(table)
                 cur.execute(command)
