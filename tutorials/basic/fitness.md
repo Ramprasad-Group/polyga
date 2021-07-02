@@ -12,7 +12,7 @@
 Now that we have fingerprinted our polymers and predicted their properties,
 we have to decide how we want them to evolve. Let's open 'silly\_utils.py'
 again (see [Running polyga](basic.md) for information on the folder setup), 
-and see how we evolved the polymers in this examples.
+and see how we evolved the polymers in this example.
 
 Note that scikit-learn is not necessary to run polyga. We pip installed
 it for this example.
@@ -122,6 +122,12 @@ You can use whatever you'd like to assess the fitness of your polymers (or
 other items). You can incorporate some or all of their predicted properties,
 you can incorporate some or none of their fingerprints, whatever you'd like.
 
+As we saw when we [analyzed the results of this example](analyzing.md), 
+this function does cause each generation of polymers to be cooler, smarter, and
+funnier!
+
+![polymr evolution](../../imgs/UnitedPolymersOfCool_property_avgs.png)
+
 Let's summarize what you need when making a fitness function:
 1. You must have both the dataframe from polyga and the fp\_headers passed
 as variables.
@@ -141,7 +147,7 @@ That's it for this basic tutorial. We learned the following things:
 5. How fitness functions are made.
 
 Next, you can either [read about how the tutorial ml models 
-were made](background.md), or go on to our [intermediate 
+were made](background.md) and discover why the polymers get so big
+, or go on to our [intermediate 
 tutorial](../intermediate/intro.md) where we use real models and migration
-to create polymers.
-dicuss 
+to create polymers. 
