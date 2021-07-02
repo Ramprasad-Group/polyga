@@ -615,7 +615,8 @@ class PolyNation:
                                                       self.land.name))
         # Reassess fitness here due to emigration.
         st = time()
-        self.population = self.land.fitness_function(self.population.copy())
+        self.population = self.land.fitness_function(self.population.copy(),
+                self.__fp_headers)
         if narrate:
             print('The polymers of {} worked for {} polyears.'.format(
                self.name, round((time() - st), 4))) 
@@ -668,7 +669,8 @@ class PolyNation:
             print('The polymers of {} took {} polyyears to graduate college.'.format(
                self.name, round((time() - st), 4))) 
         st = time()
-        self.population = self.land.fitness_function(self.population.copy())
+        self.population = self.land.fitness_function(self.population.copy(),
+                self.__fp_headers)
         if narrate:
             print('The polymers of {} worked for {} polyyears.'.format(
                self.name, round((time() - st), 4))) 

@@ -85,7 +85,7 @@ def silly_property_prediction(df, fp_headers):
     return df
     
 
-def make_coolest_funniest_smartest_polymer(df):
+def make_coolest_funniest_smartest_polymer(df, fp_headers):
     """Make the coolest fricken polymer around
 
     Args:
