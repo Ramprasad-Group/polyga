@@ -14,7 +14,7 @@ source code page.
 ### pip install
 `pip install git+https://github.com/jdkern11/polyga.git`  
 or  
-`pip install git+ssh://git@github.com:jdkern11/polyga.git`
+`pip install git+ssh://git@github.com/jdkern11/polyga.git`
 
 ### Anaconda install
 1. `conda create -n polyga python=3.7` 
