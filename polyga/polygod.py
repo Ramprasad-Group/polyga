@@ -699,13 +699,24 @@ class PolyNation:
                 print('The polymers of {} took {} polyyears to graduate college.'.format(
                    self.name, round((time() - st), 4))) 
         elif self.land.planet.num_cpus > 1:
-            # Close database since sqlite connections can't be parallelized
-            self.land.planet.conn.close()
             st = time()
+            # Close database since sqlite connections can't be parallelized
+            """
+            self.land.planet.conn.close()
+            del self.land.planet.conn
+            """
             split_df = np.array_split(self.population.copy(), 
                     self.land.planet.num_cpus)
+            # Can't pass method, need to pass function, so we must pass
+            # models and appropriate functions as parameters
+            iterables = []
+            for i in range(self.land.planet.num_cpus):
+                iterable = (split_df[i], self.land.planet.fitness_function,
+                        self.land.planet.predict_function, 
+                        self.land.planet.models)
+                iterables.append(iterable)
             pool = Pool(self.land.planet.num_cpus)
-            return_dfs, return_headers = pool.map(self.__parallelize, split_df)
+            return_dfs, return_headers = pool.starmap(__parallelize, iterables)
             pool.close()
             pool.join()
             valid_dfs = []
@@ -722,7 +733,9 @@ class PolyNation:
             self.__fp_headers = list(set(valid_headers))
 
             # Reopen connection to database
+            """
             self.land.planet.conn = sqlite3.connect(self.database)
+            """
             print(self.__fp_headers)
             print(self.population)
 
@@ -1193,25 +1206,6 @@ class PolyNation:
             chromosome_ids.append(mutation[0])
         return chromosome_ids
 
-    def __parallelize(self, df):
-        """Parallelize the running of fingerprinting and property prediction.
-
-        Args:
-            df (pd.DataFrame):
-                Polymers to fingerprint and predict on
-        Returns:
-            dataframe with all generated polymers
-        """
-        fingerprint_df, fp_headers = self.land.planet.fingerprint_function(df)
-
-        # If all polymers dropped, we just want to return None
-        if len(fingerprint_df) == 0:
-            return None, None
-
-        prediction_df = self.land.planet.predict_function(fingerprint_df,
-                fp_headers, self.land.planet.models)
-
-        return prediction_df, fp_headers
 
     def __selection(self):
         """Returns families based on selection scheme and partner scheme.
@@ -1307,3 +1301,22 @@ class PolyNation:
             return -1
         tanimoto_similarity=np.dot(x,y)/(np.dot(x,x)+np.dot(y,y)-np.dot(x,y))
         return tanimoto_similarity
+
+def __parallelize(df, fingerprint_function, predict_function, models):
+    """Parallelize the running of fingerprinting and property prediction.
+
+    Args:
+        df (pd.DataFrame):
+            Polymers to fingerprint and predict on
+    Returns:
+        dataframe with all generated polymers
+    """
+    fingerprint_df, fp_headers = fingerprint_function(df)
+
+    # If all polymers dropped, we just want to return None
+    if len(fingerprint_df) == 0:
+        return None, None
+
+    prediction_df = predict_function(fingerprint_df, fp_headers, models)
+
+    return prediction_df, fp_headers
