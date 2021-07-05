@@ -4,6 +4,7 @@ import sys
 from time import time
 import sqlite3
 import math
+from multiprocessing import Pool
 
 import pandas as pd
 import numpy as np
@@ -53,11 +54,16 @@ class PolyPlanet:
         models (dict):
             Models dict with key as parameter name, value as model used in
             predict function. Default None, in case no model used.
+        num_cpus (int):
+            Number of cpus to use when fingerprinting and predicting 
+            properties. If number on computer exceeded, number set to
+            number on computer. Default is one.
     """
     def __init__(self, name: str,
                  predict_function: callable,
                  fingerprint_function: callable,
                  models: dict = None,
+                 num_cpus: int = 1,
                  random_seed : int = 0,
                  path_to_dna : str = None,
                  save_folder: str = None):
@@ -87,12 +93,27 @@ class PolyPlanet:
             models (dict):
                 Models dict with key as parameter name, value as model used in
                 predict function. Default None, in case no model used.
+            num_cpus (int):
+                Number of cpus to use when fingerprinting and predicting 
+                properties. If number on computer exceeded, number set to
+                number on computer. Default is one.
         """
         self.name = name
         self.predict_function = predict_function
         self.fingerprint_function = fingerprint_function
         self.models = models
         self.age = 0
+        self.num_cpus = num_cpus
+        cores_on_comp = os.cpu_count()
+        if self.num_cpus > cores_on_comp:
+            self.num_cpus = cores_on_comp
+            warning = ("Tried {} cpus, but only {}".format(num_cpus, 
+                cores_on_comp) + " exist on this device. Using {}.".format(
+                cores_on_comp)
+            )
+            logging.warning(warning)
+        elif self.num_cpus < 1:
+            logging.warning('Need at least one core. Setting to one')
         self.num_citizens = 0
         self.num_nations = 0
         self.lands = []
@@ -662,20 +683,49 @@ class PolyNation:
                 If true narration message occur
         """
         st = time()
-        self.population, self.__fp_headers = (
-                self.land.planet.fingerprint_function(self.population.copy())
-        )
-        if narrate:
-            print('The polymers of {} took {} polyyears to mature.'.format(
-               self.name, round((time() - st), 4))) 
-        st = time()
-        self.population = (
-                self.land.planet.predict_function(self.population.copy(),
-                    self.__fp_headers, self.land.planet.models)
-        )
-        if narrate:
-            print('The polymers of {} took {} polyyears to graduate college.'.format(
-               self.name, round((time() - st), 4))) 
+        if self.land.planet.num_cpus == 1:
+            self.population, self.__fp_headers = (
+                    self.land.planet.fingerprint_function(self.population.copy())
+            )
+            if narrate:
+                print('The polymers of {} took {} polyyears to mature.'.format(
+                   self.name, round((time() - st), 4))) 
+            st = time()
+            self.population = (
+                    self.land.planet.predict_function(self.population.copy(),
+                        self.__fp_headers, self.land.planet.models)
+            )
+            if narrate:
+                print('The polymers of {} took {} polyyears to graduate college.'.format(
+                   self.name, round((time() - st), 4))) 
+        elif self.land.planet.num_cpus > 1:
+            st = time()
+            split_df = np.array_split(self.population.copy(), num_cores)
+            pool = Pool(num_cores)
+            return_dfs, return_headers = pool.map(self.__parallelize, split_df)
+            pool.close()
+            pool.join()
+            valid_dfs = []
+            valid_headers = []
+            # Join returned dfs and headers
+            for return_df in return_dfs:
+                if return_df is not None:
+                    valid_dfs.append(return_df)
+            self.population = pd.concat(valid_dfs)
+
+            for headers in return_headers:
+                if headers is not None:
+                    valid_headers.extend(headers)
+            self.__fp_headers = list(set(valid_headers))
+            print(self.__fp_headers)
+            print(self.population)
+
+            if narrate:
+                print('The polymers of {} took {} polyyears to grow up.'.format(
+                   self.name, round((time() - st), 4))) 
+        else:
+            logging.critical('num_cpus to use must be >= 1')
+            sys.exit()
         st = time()
         self.population = self.land.fitness_function(self.population.copy(),
                 self.__fp_headers)
@@ -1136,6 +1186,26 @@ class PolyNation:
                                       )
             chromosome_ids.append(mutation[0])
         return chromosome_ids
+
+    def __parallelize(self, df):
+        """Parallelize the running of fingerprinting and property prediction.
+
+        Args:
+            df (pd.DataFrame):
+                Polymers to fingerprint and predict on
+        Returns:
+            dataframe with all generated polymers
+        """
+        fingerprint_df, fp_headers = self.land.planet.fingerprint_function(df)
+
+        # If all polymers dropped, we just want to return None
+        if len(fingerprint_df) == 0:
+            return None, None
+
+        prediction_df = self.land.planet.predict_function(fingerprint_df,
+                fp_headers, self.land.planet.models)
+
+        return prediction_df, fp_headers
 
     def __selection(self):
         """Returns families based on selection scheme and partner scheme.
