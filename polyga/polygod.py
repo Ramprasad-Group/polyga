@@ -700,44 +700,30 @@ class PolyNation:
                    self.name, round((time() - st), 4))) 
         elif self.land.planet.num_cpus > 1:
             st = time()
-            # Close database since sqlite connections can't be parallelized
-            """
-            self.land.planet.conn.close()
-            del self.land.planet.conn
-            """
             split_df = np.array_split(self.population.copy(), 
                     self.land.planet.num_cpus)
             # Can't pass method, need to pass function, so we must pass
             # models and appropriate functions as parameters
             iterables = []
             for i in range(self.land.planet.num_cpus):
-                iterable = (split_df[i], self.land.planet.fitness_function,
+                iterable = (split_df[i], self.land.planet.fingerprint_function,
                         self.land.planet.predict_function, 
                         self.land.planet.models)
                 iterables.append(iterable)
             pool = Pool(self.land.planet.num_cpus)
-            return_dfs, return_headers = pool.starmap(__parallelize, iterables)
+            return_dfs_and_headers = pool.starmap(parallelize, iterables)
             pool.close()
             pool.join()
             valid_dfs = []
             valid_headers = []
             # Join returned dfs and headers
-            for return_df in return_dfs:
-                if return_df is not None:
-                    valid_dfs.append(return_df)
-            self.population = pd.concat(valid_dfs)
+            for return_df_and_header in return_dfs_and_headers:
+                if return_df_and_header[0] is not None:
+                    valid_dfs.append(return_df_and_header[0])
+                    valid_headers.extend(return_df_and_header[1])
 
-            for headers in return_headers:
-                if headers is not None:
-                    valid_headers.extend(headers)
+            self.population = pd.concat(valid_dfs).fillna(0)
             self.__fp_headers = list(set(valid_headers))
-
-            # Reopen connection to database
-            """
-            self.land.planet.conn = sqlite3.connect(self.database)
-            """
-            print(self.__fp_headers)
-            print(self.population)
 
             if narrate:
                 print('The polymers of {} took {} polyyears to grow up.'.format(
@@ -1302,7 +1288,7 @@ class PolyNation:
         tanimoto_similarity=np.dot(x,y)/(np.dot(x,x)+np.dot(y,y)-np.dot(x,y))
         return tanimoto_similarity
 
-def __parallelize(df, fingerprint_function, predict_function, models):
+def parallelize(df, fingerprint_function, predict_function, models):
     """Parallelize the running of fingerprinting and property prediction.
 
     Args:
@@ -1315,8 +1301,8 @@ def __parallelize(df, fingerprint_function, predict_function, models):
 
     # If all polymers dropped, we just want to return None
     if len(fingerprint_df) == 0:
-        return None, None
+        return [None, None]
 
     prediction_df = predict_function(fingerprint_df, fp_headers, models)
 
-    return prediction_df, fp_headers
+    return [prediction_df, fp_headers]
