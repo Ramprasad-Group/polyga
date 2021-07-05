@@ -700,8 +700,9 @@ class PolyNation:
                    self.name, round((time() - st), 4))) 
         elif self.land.planet.num_cpus > 1:
             st = time()
-            split_df = np.array_split(self.population.copy(), num_cores)
-            pool = Pool(num_cores)
+            split_df = np.array_split(self.population.copy(), 
+                    self.land.planet.num_cpus)
+            pool = Pool(self.land.planet.num_cpus)
             return_dfs, return_headers = pool.map(self.__parallelize, split_df)
             pool.close()
             pool.join()
