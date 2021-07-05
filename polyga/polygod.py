@@ -50,10 +50,14 @@ class PolyPlanet:
         fingerprint_function (callable):
             Function to fingerprint polymers. Passed population dataframe. Must
             return dataframe with fingerprints attached.
+        models (dict):
+            Models dict with key as parameter name, value as model used in
+            predict function. Default None, in case no model used.
     """
     def __init__(self, name: str,
                  predict_function: callable,
                  fingerprint_function: callable,
+                 models: dict = None,
                  random_seed : int = 0,
                  path_to_dna : str = None,
                  save_folder: str = None):
@@ -80,10 +84,14 @@ class PolyPlanet:
                 Path to save planet/nations in.
                 Default is None, which
                 means save in current folder.
+            models (dict):
+                Models dict with key as parameter name, value as model used in
+                predict function. Default None, in case no model used.
         """
         self.name = name
         self.predict_function = predict_function
         self.fingerprint_function = fingerprint_function
+        self.models = models
         self.age = 0
         self.num_citizens = 0
         self.num_nations = 0
@@ -663,7 +671,7 @@ class PolyNation:
         st = time()
         self.population = (
                 self.land.planet.predict_function(self.population.copy(),
-                    self.__fp_headers)
+                    self.__fp_headers, self.land.planet.models)
         )
         if narrate:
             print('The polymers of {} took {} polyyears to graduate college.'.format(

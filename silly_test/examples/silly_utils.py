@@ -1,5 +1,3 @@
-import pickle
-import os
 from collections import defaultdict
 
 import pandas as pd
@@ -49,7 +47,7 @@ def silly_fingerprint(df):
     fp_headers = [col for col in fp_df.columns if 'fp_' in col]
     return fp_df, fp_headers
 
-def silly_property_prediction(df, fp_headers):
+def silly_property_prediction(df, fp_headers, models):
     """Predict silly properties of polymers
 
     Args:
@@ -57,22 +55,12 @@ def silly_property_prediction(df, fp_headers):
             dataframe of fingerprinted polymers
         fp_headers (list):
             list of fingerprint headers
+        models (dict):
+            Key is parameter name, value is the model
 
     Returns:
         same dataframe with predictions attached
     """
-    model_folder = os.path.dirname(os.path.realpath(__file__))
-    properties = {
-                  'Polymer_Coolness': 'Polymer_Coolness_random-forest.pkl',
-                  'Polymer_Intelligence': 'Polymer_Intelligence_random-forest.pkl',
-                  'Polymer_Funnyness': 'Polymer_Funnyness_random-forest.pkl'
-                 }
-    models = {}
-    for prop in properties:
-        model_file = open(os.path.join(model_folder, properties[prop]), 'rb')
-        models[prop] = pickle.load(model_file)
-        model_file.close()
-
     prop_values = defaultdict(list)
     for model in models:
         prop_values[model] = (

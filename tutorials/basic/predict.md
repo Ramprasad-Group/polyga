@@ -22,7 +22,7 @@ To understand, open 'silly\_utils.py' in the 'examples' folder (see
 [Running polyga](basic.md) for information on the folder setup). In this file
 is the following function:
 ```Python
-def silly_property_prediction(df, fp_headers):
+def silly_property_prediction(df, fp_headers, models):
     """Predict silly properties of polymers
 
     Args:
@@ -30,22 +30,12 @@ def silly_property_prediction(df, fp_headers):
             dataframe of fingerprinted polymers
         fp_headers (list):
             list of fingerprint headers
+        models (dict):
+            Key is parameter name, value is the model
 
     Returns:
         same dataframe with predictions attached
     """
-    model_folder = os.path.dirname(os.path.realpath(__file__))
-    properties = {
-                  'Polymer_Coolness': 'Polymer_Coolness_random-forest.pkl',
-                  'Polymer_Intelligence': 'Polymer_Intelligence_random-forest.pkl',
-                  'Polymer_Funnyness': 'Polymer_Funnyness_random-forest.pkl'
-                 }
-    models = {}
-    for prop in properties:
-        model_file = open(os.path.join(model_folder, properties[prop]), 'rb')
-        models[prop] = pickle.load(model_file)
-        model_file.close()
-
     prop_values = defaultdict(list)
     for model in models:
         prop_values[model] = (
@@ -61,30 +51,35 @@ def silly_property_prediction(df, fp_headers):
 This is a custom function I wrote to predict the properties, and would require
 the following dependencies
 ```Python
-import pickle
-import os
 from collections import defaultdict
 import pandas as pd
 ```
 
-To start, the function loads the models which I know are located in the same 
+Previously, we loaded the models which were located in the same 
 folder the silly\_utils.py script is located in:
 ```Python
-    model_folder = os.path.dirname(os.path.realpath(__file__))
-    properties = {
-                  'Polymer_Coolness': 'Polymer_Coolness_random-forest.pkl',
-                  'Polymer_Intelligence': 'Polymer_Intelligence_random-forest.pkl',
-                  'Polymer_Funnyness': 'Polymer_Funnyness_random-forest.pkl'
-                 }
-    models = {}
-    for prop in properties:
-        model_file = open(os.path.join(model_folder, properties[prop]), 'rb')
-        models[prop] = pickle.load(model_file)
-        model_file.close()
+model_folder = 'examples'
+properties = {
+              'Polymer_Coolness': 'Polymer_Coolness_random-forest.pkl',
+              'Polymer_Intelligence': 'Polymer_Intelligence_random-forest.pkl',
+              'Polymer_Funnyness': 'Polymer_Funnyness_random-forest.pkl'
+             }
+models = {}
+for prop in properties:
+    model_file = open(os.path.join(model_folder, properties[prop]), 'rb')
+    models[prop] = pickle.load(model_file)
+    model_file.close()
 ```
-The first line here loads the path to silly\_utils.py and, by extension, all
-my models. Next, I load my models (I saved them as .pkl files) and save them
+I loaded my models (I saved them as .pkl files) and save them
 in a dictionary with the property name as the key and the model as the value.
+This made it easy to access, but technically one could load the models in 
+any way. Additionally, you could not pass any models, but you must have a model
+parameter in the predict function, even if you don't use it.
+
+Now, I create a dictionary of lists and predict all the properties for each
+polymer. One **CRITICAL** thing to note is polyga will always pass a hard copy of
+the child dataframe as the first parameter, fingerprint headers to the 
+prediction function as the second, and models as the third (even if None):
 
 ```Python
     prop_values = defaultdict(list)
@@ -94,14 +89,10 @@ in a dictionary with the property name as the key and the model as the value.
                 )
 ```
 
-Now, I create a dictionary of lists and predict all the properties for each
-polymer. One **CRITICAL** thing to note is polyga will always pass a hard copy of
-the child dataframe as the first parameter and fingerprint headers to the 
-prediction function as the second:
 ```Python
-def silly_property_prediction(df, fp_headers):
+def silly_property_prediction(df, fp_headers, models):
 ```
-Hence, these two parameters in the created function.
+Hence, these three parameters in the created function.
 
 Finally, we save all the property values to the original dataframe and
 return it back to polyga.
@@ -114,8 +105,9 @@ return it back to polyga.
 ```
 
 To summarize steps one would need to take to predict properties:
-1. We defined a function where the first parameter was the child dataframe and
-the second were the fingerprint headers in the dataframe
+1. We defined a function where the first parameter was the child dataframe,
+the second were the fingerprint headers in the dataframe, and the third was 
+the dictionary of models
 2. We opened our models, manually knowing where they were located in our
 harddrive
 3. We predicted the properties for each polymer and saved them in the original

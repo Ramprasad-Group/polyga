@@ -124,7 +124,7 @@ you can incorporate some or none of their fingerprints, whatever you'd like.
 
 As we saw when we [analyzed the results of this example](analyzing.md), 
 this function does cause each generation of polymers to be cooler, smarter, and
-funnier!
+funnier than the previous!
 
 ![polymr evolution](../../imgs/UnitedPolymersOfCool_property_avgs.png)
 
