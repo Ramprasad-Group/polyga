@@ -699,6 +699,8 @@ class PolyNation:
                 print('The polymers of {} took {} polyyears to graduate college.'.format(
                    self.name, round((time() - st), 4))) 
         elif self.land.planet.num_cpus > 1:
+            # Close database since sqlite connections can't be parallelized
+            self.land.planet.conn.close()
             st = time()
             split_df = np.array_split(self.population.copy(), 
                     self.land.planet.num_cpus)
@@ -718,6 +720,9 @@ class PolyNation:
                 if headers is not None:
                     valid_headers.extend(headers)
             self.__fp_headers = list(set(valid_headers))
+
+            # Reopen connection to database
+            self.land.planet.conn = sqlite3.connect(self.database)
             print(self.__fp_headers)
             print(self.population)
 
