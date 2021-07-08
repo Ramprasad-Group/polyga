@@ -1,6 +1,7 @@
 """PolyGod contains PolyPlanet, PolyLand, and PolyNation classes"""
 import os
 import sys
+import gc
 from time import time
 import sqlite3
 import math
@@ -177,6 +178,7 @@ class PolyPlanet:
             self.emigration_list = []
         for land in self.lands:
             land.propagate_nations(take_census, narrate)
+        gc.collect()
 
     def complete_run(self):
         """Close database connection"""
