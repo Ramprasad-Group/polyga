@@ -256,7 +256,7 @@ class PolyPlanet:
         """Initialize database."""
         self.database_cols = [
                               'planetary_id', 'parent_1_id', 'parent_2_id',
-                              'parent_2_id', 'smiles_string', 'birth_land',
+                              'smiles_string', 'birth_land',
                               'birth_nation', 'str_chromosome_ids', 
                               'land', 'generation', 'nation', 'planet', 
                               'birth_planet', 'num_chromosomes'
