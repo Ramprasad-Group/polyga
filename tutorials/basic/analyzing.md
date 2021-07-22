@@ -40,7 +40,7 @@ Polymer_Funnyness
 ```
 
 If we open the Silly\_Test folder we should see some images as well. The first
-one should look something like this, although, GAs are heuristic models so
+one should look something like this, although, GAs are stochastic models so
 your results may vary.  
 ![properties image](../../imgs/UnitedPolymersOfCool_property_avgs.png)
 
@@ -56,9 +56,9 @@ this excitement.
 
 ![pol length img](../../imgs/length_avg.png)
 
-Here we see the polymers are getting longer as time goes by. If we actually 
-wanted to synthesize these polymers, this increase in length would make that 
-much more challenging. To understand why this is occuring, we'll have
+Here we see the polymer repeat units are getting longer as time goes by. If we 
+actually wanted to synthesize these polymers, this increase in length would make 
+that much more challenging. To understand why this is occuring, we'll have
 to examine our random forest models and fingerprints in a bit, but first, let's
 go over the code that facilitated this analysis.
 

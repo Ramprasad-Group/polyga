@@ -44,6 +44,12 @@ def silly_fingerprint(df):
             continue
     
     fp_df = pd.DataFrame.from_dict(fp_dict)
+    keys = [key for key in fp_dict.keys()]
+    for key in keys:
+        del fp_dict[key]
+    del keys
+    del fp_dict
+
     fp_headers = [col for col in fp_df.columns if 'fp_' in col]
     return fp_df, fp_headers
 
@@ -67,9 +73,13 @@ def silly_property_prediction(df, fp_headers, models):
                 models[model].predict(df[fp_headers].values).reshape(-1)
                 )
     
-    for key in prop_values.keys():
-        df[key] = prop_values[key]
-    
+    keys = [key for key in prop_values.keys()]
+    for key in keys:
+        df[key] = prop_values[key].copy()
+        del prop_values[key]
+    del keys
+    del prop_values 
+
     return df
     
 

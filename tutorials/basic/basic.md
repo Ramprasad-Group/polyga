@@ -15,6 +15,9 @@ for polyga, download the zip folder for polyga by clicking the green "code"
 button and move the silly\_test folder to your working directory after 
 downloading.
 
+For background on why I named them planets, lands, and nations, see
+[the background](../../background/ga.md)
+
 You working directory should look something like this
 
 ```

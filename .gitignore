@@ -7,6 +7,9 @@ Sphinx-docs/*
 !/.gitignore
 silly_test/Planet_Silly/
 silly_test/Planet_Silly/*
+silly_test/Planet_Silly_Size/*
+silly_test/silly_test_with_size.py
+silly_test/loc.txt
 __pycache__/
 **/__pycache__/
 **/__pycache__/*
