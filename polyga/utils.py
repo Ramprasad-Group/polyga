@@ -118,7 +118,7 @@ def chromosome_ids_to_smiles(chromosome_ids: list, chromosomes: dict,
 
     # Convert edtg to endatom symbols
     endatom = {
-               'e': ['Sb', 51], 't': ['Po', 51], 
+               'e': ['Sb', 51], 't': ['Po', 84], 
               }
 
     for m, i in zip(mols_of_chromosomes, range(len(mols_of_chromosomes))):
