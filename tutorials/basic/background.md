@@ -19,7 +19,7 @@ For this tutorial, I did three things:
 
 This is somewhat like what you would do in real life, except you would:
 
-1. Find real, published properties for your values.
+1. Find real, published properties for your polymers.
 
 2. Fingerprint your polymers.
 
@@ -29,9 +29,9 @@ Don't make fake data :)
 
 ### Fingerprinting
 First, I arbitrarily selected 2000 real repeat polymers from a list of polymers. Then,
-I used rdkit to create 2048 bit morgan fingerprint with a radius of 5. If you
+I used rdkit to create 2048 bit morgan fingerprints with a radius of 5. If you
 want to read about Morgan Fingerprints, [you can find the original paper here](https://pubs.acs.org/doi/10.1021/c160017a018).
-I arbitrarily chose these values aritrarily, however. I just wanted to make sure
+I arbitrarily chose these values, however, as I just wanted to make sure
 each polymer had a unique fingerprint. Unfortuneately, they did not, so I added
 another fingerprint that was just the number of charcters in the smile string.
 In real research, you'd want to make sure the fingerprint you're using actually
@@ -70,11 +70,13 @@ funniness. I assigned two random numbers, one an integer between 1 and 99, and
 another a float between -1 and 1 for each property. The first number was
 taken to the power of the second, and multiplied by the bit for a specific 
 polymer. In math terms, this is shown in the img below
+
 ![basic-example-equation](../../imgs/simple_example_eq.png)
 
-With x<sub>i</sub> being the bit value of that fingerprint, j<sub>i</sub> being
+With i representing a specific polymer,
+x<sub>i</sub> being the bit value of that fingerprint, j<sub>i</sub> being
 the first number we randomly generated (1 to 99) and k<sub>i</sub> being the
-second (-1 to 1). The code is shown below:
+second (-1 to 1). This was done for each fake property. The code is shown below:
 ```Python
 import pandas as pd
 import random
@@ -155,7 +157,7 @@ RMSE Polymer Intelligence: 15.50826744999448
 MSE Polymer Funnyness: 581.2245443580997  
 RMSE Polymer Funnyness: 24.108598971282003  
 
-Again, these don't really mean, much, but it's fun to practice what you 
+Again, these don't really mean much, but it's fun to practice what you 
 might do in real life a little bit. This was the final step when setting up
 the models for the silly tutorial, and you can see the code for this step
 below:  
