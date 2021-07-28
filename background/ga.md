@@ -2,8 +2,7 @@
 ## Tutorial Navigation:
 - [Home](../README.md)
 - Background
-- [How the DNA list works](dna.md)
-- [Making a generative function](generative.md)
+- [polyga](polyga.md)
 
 ## Background 
 In this background I will explain two things: how genetic algorithms (GAs) work 
@@ -12,7 +11,7 @@ behind GAs first so you understand why people use them, and then I can explain
 how polyga is implemented and why it is implemented in this way.
 
 If you already know a lot about GAs and only care about how polyga is 
-implemented, see [polyga](#polyga).
+implemented, see [polyga](polyga.md).
 
 ### Genetic Algorithms
 All genetic algorithms work based off the circle of life and Darwinian 
@@ -54,7 +53,6 @@ is a lot more you can read, but I suggest trying to use a GA first.
 
 ### Some caveats...
 
-I promise we'll get to polyga soon, but I need to stress a few points first.
 #### 1. GAs tend to not generate diverse solutions
 Once a basic GA finds a space that achieves the target, it tends to get stuck. 
 It doesn't explore a wide space anymore, staying in the local optimum.
@@ -75,36 +73,5 @@ I would keep in mind how any algorithm you use works if it doesn't seem to be
 effective. These might influence results and you could try implementing
 a different scheme if you're not satisfied.
 
-### polyga
-On to polyga. First, some basic information about its origin:
-1. It was designed to predict hypothetical polymers
-2. It was commonly integrated with machine learning models to assess fitness 
-functions
-3. It used single point crossover
-4. It used elite selection
-5. The mutation operator selected a random number of chromosome and changed them
-to new random chromosomes
-
-These are the basic points about the original implementation of polyga. The 
-new implementation has some additions added:
-1. The user can specify the dna and design scheme to make use of the basic
-algorithm while also being able to do more advanced research for their specific
-task
-2. The user can generate islands with unique fitness functions, mutation rates,
-etc... then populate those islands with nations that have different selection
-schemes, family sizes, etc... This allows for two things:
-    1. Migration can occur between nations, allow the user to create niches of
-desireable traits and then improve the properties of more complex fitness
-functions more quickly.
-    2. Users run experiments with different hyperparameters concurently
-and assess their effects.
-3. Additional selection schemes are implemented as seen in the docs.
-
-In subsequent sections, I will explain how the dna list works and how to create
-your own, how the generative function should work, how fingerprinting and
-property prediction should work, how fitness functions should work, and then
-I will showcase some examples of the power of polyga with some followup
-tutorials.
-
-I know it sounds like a lot, but it will be fun!
-[On to the DNA list!](dna.md)
+With those caveats stated, 
+[let's describe how polyga is implemented](polyga.md).

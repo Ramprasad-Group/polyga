@@ -5,7 +5,7 @@
 - [Analyzing polyga run](analyzing.md) 
 - [Prediction of properties](predict.md)
 - [Fingerprinting function](fingerprinting.md)
-- [Creating fitness functions](fitness.md)
+- Creating fitness functions
 - [(OPTIONAL) tutorial background](background.md)
 
 ## Creating fitness functions
@@ -147,7 +147,7 @@ That's it for this basic tutorial. We learned the following things:
 5. How fitness functions are made.
 
 Next, you can either [read about how the tutorial ml models 
-were made](background.md) and discover why the polymers get so big
-, or go on to our [intermediate 
+were made](background.md) and discover why the polymer repeat units get so big,
+ or go on to our [intermediate 
 tutorial](../intermediate/intro.md) where we use real models and migration
 to create polymers. 

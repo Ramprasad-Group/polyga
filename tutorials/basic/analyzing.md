@@ -2,7 +2,7 @@
 ## Navigation
 - [Front Page](../../README.md)
 - [Running polyga](basic.md)
-- [Analyzing polyga run](analyzing.md) 
+- Analyzing polyga run
 - [Prediction of properties](predict.md)
 - [Fingerprinting function](fingerprinting.md)
 - [Creating fitness functions](fitness.md)
