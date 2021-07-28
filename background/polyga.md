@@ -32,7 +32,7 @@ schemes, family sizes, etc... This allows for two things:
 
     1. Migration can occur between nations, allowing the user to create niches of
 desireable traits and then improve the properties of more complex fitness
-functions more quickly.
+functions by having these niche polymers migrate to the more complex land.
 
     2. Users can run experiments with different hyperparameters concurently
 and assess their effects.
@@ -55,7 +55,7 @@ faciltiates migration between nations.
 
 #### 2. Lands
 
-These influence how your polymers will evolve, with each land having a unique i
+These influence how your polymers will evolve, with each land having a unique 
 fitness function. In my head, I imagine this is because each land has different
 environmental factors that influence the evolution of the animals, just like
 on Earth.
@@ -65,3 +65,6 @@ on Earth.
 This is where most of the work occurs. Different nations have different 
 migration patterns, acceptance of foreigners, mating rituals, etc... Again, just
 like in real life.
+
+If you want to understand better, you can feel free to read the code or the 
+docs.

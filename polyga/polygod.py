@@ -19,43 +19,56 @@ class PolyPlanet:
     some other information.
 
     Attributes:
+
         num_citizens (int): 
             Number of citizens ever existing on planet.
-        name (str): 
+        name (str):   
             name of the planet/folder where data is saved.
-        lands (list): 
+
+        lands (list):  
             list of all lands on the planet
-        dna (pd.DataFrame): 
+
+        dna (pd.DataFrame):  
             pandas dataframe containing chromosomes, 
             their frequency in nature, and the chromosome ids.
-        chromosomes (dict): 
+
+        chromosomes (dict):  
             dictionary of chromosome ids and their 
             chromosome polymers can use.
-        random_seed (int): 
+
+        random_seed (int):  
             Random seed to use for planet. If 0, no
             random seed is used.
-        save_folder (str): 
+
+        save_folder (str):  
             Path to save planet/nations in.
             Default is None, which
             means save in current folder.
-        planetary_database (str): 
+
+        planetary_database (str):  
             Path to database of all polymers and their predicted 
             properties.
-        emigration_list (list):
+
+        emigration_list (list):  
             Stores emigration information for a generation.
-        num_nations (int):
+
+        num_nations (int):  
             Number of nations on the planet.
-        predict_function (callable):
+
+        predict_function (callable):  
             Function to predict properties of polymers. Passed dataframe of 
             polymers, should return same dataframe with propery predictions
             attached.
-        fingerprint_function (callable):
+
+        fingerprint_function (callable):  
             Function to fingerprint polymers. Passed population dataframe. Must
             return dataframe with fingerprints attached.
-        models (dict):
+
+        models (dict):  
             Models dict with key as parameter name, value as model used in
             predict function. Default None, in case no model used.
-        num_cpus (int):
+
+        num_cpus (int):  
             Number of cpus to use when fingerprinting and predicting 
             properties. If number on computer exceeded, number set to
             number on computer. Default is one.
@@ -71,30 +84,38 @@ class PolyPlanet:
         """Initialize planet
           
         Args:
-            name (str): 
+
+            name (str):   
                 Name of the planet/folder where data is saved.
-            predict_function (callable):
+                
+            predict_function (callable):  
                 Function to predict properties of polymers. Passed dataframe of 
                 polymers, should return same dataframe with propery predictions
                 attached.
-            fingerprint_function (callable):
+
+            fingerprint_function (callable):  
                 Function to fingerprint polymers. Passed population dataframe. 
                 Must return dataframe with fingerprints attached and a list
                 of fingerprint column headers.
-            random_seed (int): 
+
+            random_seed (int):   
                 Random seed to use for planet. If 0, no
                 random seed is used.
-            path_to_dna (str): 
+
+            path_to_dna (str):   
                 Full path to block list used to create 
                 polymers. Default is original PolyGA block list.
-            save_folder (str): 
+
+            save_folder (str):  
                 Path to save planet/nations in.
                 Default is None, which
                 means save in current folder.
-            models (dict):
+
+            models (dict):  
                 Models dict with key as parameter name, value as model used in
                 predict function. Default None, in case no model used.
-            num_cpus (int):
+
+            num_cpus (int):  
                 Number of cpus to use when fingerprinting and predicting 
                 properties. If number on computer exceeded, number set to
                 number on computer. Default is one.
@@ -162,9 +183,11 @@ class PolyPlanet:
         immigrates polymers to new nation. Finally, breeds polymers and saves.
 
         Args:
-            take_census (bool):
+
+            take_census (bool):  
                 If true, generation information saved
-            narrate (bool):
+
+            narrate (bool):  
                 if true narration message occur
         """
         if narrate:
@@ -298,40 +321,51 @@ class PolyLand:
     their survival.
     
     Attributes:
+
         name (str): 
             Name of the land.
-        planet (PolyPlanet): 
+
+        planet (PolyPlanet):  
             PolyPlanet land is located on.
+
         nations (list): 
             All nations on the land.
-        crossover_position (str): 
+
+        crossover_position (str):  
             str representing crossover cutting position.
             'relative_center' = center with Gaussian distribution,
             'center'=exact center, 'random'=random position.
             Default is 'relative_center'
-        crossover_sigma_offset (float): 
+
+        crossover_sigma_offset (float):  
             float representing standard deviation of cut 
             from center position for crossover (unit: block).
             Only applies for 'relative_center'.
             Default 0.1 blocks.
-        fraction_mutation (float): 
+
+        fraction_mutation (float):  
             Number representing chance of mutation.
             Ex, 0.1 = 10% (in average of Gaussian distribution)
             of genomes in a monomer can be mutated.
             Default is 0.1.
+
         mutation_sigma_offset (float): 
             Float representing standard deviation of
             number of blocks to be mutated (unit: %/100).
             Default is 0.25 (=25%).
-        fraction_mutate_additional_block (float): 
+
+        fraction_mutate_additional_block (float):  
             float indicating percent of polymers to append
             randomly chosen block to (0.1 = 10%). Default 0.05
-        land_chromosomes (list): 
+
+        land_chromosomes (list):  
             Chromosome ids land can use.
-        generative_function (callable):
+
+        generative_function (callable):  
             Function to put together chromosomes into polymer. Passed 
             list of chromosomes and dna, returns smiles of polymer
-        fitness_function (callable): 
+
+        fitness_function (callable):  
             Function to assess fitness of polymers by. Passed population 
             dataframe. Must return
             a list or 1d np.array thats order is in the same 
@@ -370,9 +404,11 @@ class PolyLand:
         """Generates families and propagates next generation of all nations.
 
         Args:
-            take_census (bool):
+
+            take_census (bool):  
                 If true, generation information saved
-            narrate (bool): 
+
+            narrate (bool):  
                 If true narration message occur
         """
         if narrate:
@@ -386,7 +422,7 @@ class PolyLand:
 
         e.g., returns mutation and crossover information
 
-        Returns (tuple): 
+        Returns (tuple):   
             (fraction_mutation, mutation_sigma_offset,
              fraction_mutate_additional_block, crossover_position,
              crossover_sigma_offset)
@@ -410,7 +446,8 @@ class PolyLand:
         Where fingerprinting and property prediction occurs.
 
         Args:
-            narrate (bool): 
+
+            narrate (bool):  
                 If true narration message occur
         """
         for nation in self.nations:
@@ -428,56 +465,70 @@ class PolyNation:
     They are influenced by their PolyLand.
 
     Attributes:
-        name (str): 
+
+        name (str):  
             name of the nation
-        land (PolyLand): 
+
+        land (PolyLand):  
             PolyLand Nation is located on
-        initial_population_file (str): 
+
+        initial_population_file (str):  
             Optional. Full path to file containing initial population. If 
             initial_population and initial_population_file None, random initial
             population is used. If both passed, 
             initial_population takes preference. Default None.
-        initial_population (pandas.DataFrame): 
+
+        initial_population (pandas.DataFrame):  
             Pandas dataframe containing initial population. If 
             initial_population and initial_population_file None, random initial
             population is used. If both passed, 
             initial_population takes preference. Default None.
-        num_families (int): 
+
+        num_families (int):  
             Number of families that will propagate. Default 45
-        num_parents_per_family (int): 
+
+        num_parents_per_family (int):  
             Each pair of parents will mate. Default 2.
-        num_children_per_family (int): 
+            
+        num_children_per_family (int):  
             Number of children per pair of parents. Default is 4.
-        generation (int): 
+
+        generation (int):  
             Current generation of polymers in this nation.
-        selection_scheme (str): 
+
+        selection_scheme (str):   
             str representing how polymers in this nation choose
             to mate. 'elite' means only the highest scoring
             polymers mate. 'random' means random polymers are
             chosen. Default 'elite'
-        partner_selection (str): 
+
+        partner_selection (str):  
             str representing how parents choose their mate.
             'diversity' means highest scoring parents choose
             partner based on least similar tanimoto similarity
             score. 'random' means partner chosen randomly.
             Default 'diversity'.
-        emigration_rate (float):
+
+        emigration_rate (float):  
             Value between 0 and 0.5 representing the % of polymers that will
             emigrate to a new nation. Values greater than
             0.5 reduced to 0.5. Values less than 0 increased to 0.
             Default is 0.1 (10%).
-        emigration_selection (str):
+
+        emigration_selection (str):  
             Method of selecting which polymers will emigrate. "random" means
             random selection. "elite" means highest scoring in current
             nation will emigrate. "best_worst" means the highest scoring
             polymers that wouldn't be selected as parents emigrate. 
             Default is "best_worst" 
-        parent_migrant_percentage (float):
+
+        parent_migrant_percentage (float):  
             Percentage of parents that will automatically be migrants, even
             if their fitness score is low. For example, if .1, 10% of parents  
             will be migrants, if available. Parents will be taken equally from
             **from each nation** until max added. Default is 0.1
-        immigration_pattern (dict):
+
+        immigration_pattern (dict):  
             keys of dict are strings representing the country polymers will 
             immigrate too, values are floats representing the percentage of 
             polymers that will emigrate. i.e., if 10% are migrating total, 
@@ -488,7 +539,8 @@ class PolyNation:
             summed to less than one, remaining polymers sent to random
             locations. If location indicated that doesn't exist, error
             is thrown.
-        random_seed (int): 
+
+        random_seed (int):   
             Random seed to use for nation. If 0, no
             random seed is used.
     """
@@ -510,20 +562,25 @@ class PolyNation:
         """Intialize nation.
 
         Args:
+
             name (str): 
                 name of the nation
+
             land (PolyLand): 
                 PolyLand Nation is located on
+
             initial_population_file (str): 
                 Optional. Full path to file containing initial population. If 
                 initial_population and initial_population_file None, random 
                 initial population is used. If both passed, 
                 initial_population takes preference. Default None.
+
             initial_population (pandas.DataFrame): 
                 Pandas dataframe containing initial population. If 
                 initial_population and initial_population_file None, random 
                 initial population is used. If both passed, 
                 initial_population takes preference. Default None.
+
             num_population_initial (int):
                 Number of polymers to randomly generate for the initial pop.
             num_families (int): 
