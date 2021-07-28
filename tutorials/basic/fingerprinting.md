@@ -4,7 +4,7 @@
 - [Running polyga](basic.md)
 - [Analyzing polyga run](analyzing.md) 
 - [Prediction of properties](predict.md)
-- [Fingerprinting function](fingerprinting.md)
+- Fingerprinting function
 - [Creating fitness functions](fitness.md)
 - [(OPTIONAL) tutorial background](background.md)
 
