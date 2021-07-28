@@ -581,43 +581,52 @@ class PolyNation:
                 initial population is used. If both passed, 
                 initial_population takes preference. Default None.
 
-            num_population_initial (int):
+            num_population_initial (int):  
                 Number of polymers to randomly generate for the initial pop.
-            num_families (int): 
+
+            num_families (int):   
                 Number of families that will propagate. Default 45
-            num_parents_per_family (int): 
+
+            num_parents_per_family (int):  
                 Each pair of parents will mate. Default 2.
-            num_children_per_family (int): 
+
+            num_children_per_family (int):  
                 Number of children per pair of parents. Default is 4.
-            selection_scheme (str): 
+
+            selection_scheme (str):  
                 str representing how polymers in this nation choose
                 to mate. 'elite' means only the highest scoring
                 polymers mate. 'random' means random polymers are
                 chosen. Default 'elite'
-            partner_selection (str): 
+
+            partner_selection (str):  
                 str representing how parents choose their mate.
                 'diversity' means highest scoring parents choose
                 partner based on least similar tanimoto similarity
                 score. 'random' means partner chosen randomly.
                 Default 'diversity'.
-            emigration_rate (float):
+
+            emigration_rate (float):  
                 Value between 0 and 0.5 representing the % of polymers that will
                 emigrate to a new nation. Values greater than
                 0.5 reduced to 0.5. Values less than 0 increased to 0. Polymers
                 who emigrate are chosen via emigration_selection.
                 Default is 0.1 (10%).
-            emigration_selection (str):
+
+            emigration_selection (str):  
                 Method of selecting which polymers will emigrate. "random" means
                 random selection. "elite" means highest scoring in current
                 nation will emigrate. "best_worst" means the highest scoring
                 polymers that wouldn't be selected as parents emigrate. 
                 Default is "best_worst" 
-            parent_migrant_percentage (float):
+
+            parent_migrant_percentage (float):  
                 Percentage of parents that will automatically be migrants, even
                 if their fitness score is low. For example, if .1, 10% of parents  
                 will be migrants, if available. Parents will be taken equally from
                 **from each nation** until max added. Default is 0.1
-            immigration_pattern (dict):
+
+            immigration_pattern (dict):  
                 keys of dict are strings representing the country polymers will 
                 immigrate too, values are floats representing the percentage of 
                 polymers that will emigrate. i.e., if 10% are migrating total, 
@@ -692,10 +701,11 @@ class PolyNation:
     def propagate_species(self, take_census: bool = True, narrate: bool = True):
         """Creates families and propagates next generation of polymers.
 
-        Args:
-            take_census (bool):
+        Args:  
+            take_census (bool):  
                 If true, generation information saved
-            narrate (bool):
+
+            narrate (bool):  
                 If true narration message occur
         """
         if narrate:
@@ -919,14 +929,15 @@ class PolyNation:
         is used, this parent will have the highest fitness score of the
         three.
 
-        Args:
-            families (list): 
+        Args:  
+            families (list):   
                 list of lists of polymer family parents
                 
-        Returns:
-            all_child_chromosome_ids (list): 
+        Returns:  
+            all_child_chromosome_ids (list):  
                 List of lists of child choromosome ids.
-            all_parents (list):
+
+            all_parents (list):  
                 List of lists of all parent planetary ids in same index order 
                 as all_child_chromosome_ids.
         """
@@ -1071,14 +1082,15 @@ class PolyNation:
         """Generates random population of polymers
           
         Args:
-            num_population_initial (int): 
+            num_population_initial (int):  
                 int representing number of polymers to 
                 randomly generate
-            num_chromosomes_initial (int): 
+
+            num_chromosomes_initial (int):   
                 int representing number of blocks each 
                 randomly generated polymer has
         
-        Returns (pd.DataFrame):
+        Returns (pd.DataFrame):  
             Pandas dataframe of population
         """
         population = []
@@ -1116,10 +1128,11 @@ class PolyNation:
     def __log_births(self, children, parents):
         """Logs details of the birth of the new children and returns population
 
-        Args:
-            children (list): 
+        Args:  
+            children (list):  
                 list of children chromosome ids
-            parents (list): 
+
+            parents (list):  
                 list of pairs parents and their planetary_ids.
         """
         population = []
@@ -1214,11 +1227,11 @@ class PolyNation:
     def __mutate(self, chromosome_ids):
         """Mutates some chromosomes in the list of chromosome ids
 
-        Args:
+        Args:  
             chromosome_ids (list): 
                 list of chromosomes
 
-        Returns:
+        Returns:  
             chromosome list of chromosomes with some mutations
         """
         num_to_mutate = round(self.rng.normal(
@@ -1351,9 +1364,10 @@ def parallelize(df, fingerprint_function, predict_function, models):
     """Parallelize the running of fingerprinting and property prediction.
 
     Args:
-        df (pd.DataFrame):
+        df (pd.DataFrame):  
             Polymers to fingerprint and predict on
-    Returns:
+
+    Returns:  
         dataframe with all generated polymers
     """
     fingerprint_df, fp_headers = fingerprint_function(df)
