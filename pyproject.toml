@@ -2,8 +2,8 @@
 name = "polyga"
 version = "1.0.0"
 description = "Polymer Genetic Algorithm"
-authors = ["Chiho Kim <chiho.kim@gatech.edu>", "Joseph Kern <jkern34@gatech.edu>"]
-repository = "https://github.com/jdkern11/polyga.git"
+authors = ["Joseph Kern <jkern34@gatech.edu>", "Chiho Kim <chiho.kim@gatech.edu>"]
+repository = "https://github.com/Ramprasad-Group/polyga.git"
 
 [tool.poetry.dependencies]
 python = ">=3.7.1,<3.10"
