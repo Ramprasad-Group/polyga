@@ -30,8 +30,7 @@ source code page.
 6. [(OPTIONAL) tutorial background](background.md)
 
 ## Advanced Tutorials
-1. [How the DNA list works](tutorials/dna.md)
-2. [Making a generative function](tutorials/generative.md)
+1. Will be added soon
 
 ## Background
 1. [Genetic Algorithms](background/ga.md)
