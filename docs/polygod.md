@@ -286,6 +286,10 @@ their survival.
   Function to put together chromosomes into polymer. Passed
   list of chromosomes and dna, returns smiles of polymer
   
+  generative_function_parameters (Dict):
+  Extra parameters for generative function in dict format.
+  Default an empty Dict
+  
   fitness_function (callable):
   Function to assess fitness of polymers by. Passed population
   dataframe. Must return
