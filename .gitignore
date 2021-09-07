@@ -15,3 +15,4 @@ __pycache__/
 **/__pycache__/*
 doc_creation.txt
 build/
+dist/
