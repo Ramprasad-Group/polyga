@@ -28,7 +28,7 @@ smiles_string
 birth_land
 birth_nation
 birth_planet
-str_chromosome_ids
+chromosome_ids
 generation
 settled_planet
 settled_land

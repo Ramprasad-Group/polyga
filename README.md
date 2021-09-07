@@ -74,32 +74,6 @@ This database is easy to import with pandas and can be saved during runtime.
 This could be because you've generated a lot of polymers. I've found it can
 take a minute or two to load when I have over 100,000 polymers. 
 
-### Why is the chromosome list a string when I load the database?
-SQL can't easily store a list in a database. I made the choice to store the list
-as a string, as it is easy to reconvert it back to a list from a string. To do
-so you can run the following code:
-```Python
-import os
-import sqlite3
-
-import pandas as pd
-
-save_loc = os.path.join('path', 'to', 'my', 'planetary_database.sqlite')
-conn = sqlite3.connect(save_loc)
-query = "SELECT * FROM planetary_database"
-df = pd.read_sql(query, conn)
-conn.close()
-
-def str_to_list(string):
-    """remove [] and whitespace, then create list of integers to return"""
-    string = string[1:-1].replace(' ', '').split(',')
-    return [int(str_id) for str_id in string]
-
-df['chromosome_ids'] = [str_to_list(str_ids) for str_ids 
-                        in df.str_chromosome_ids]
-
-```
-
 ### Why have "lands" and "nations" and "planets"?
 I wanted to replicate the way evolution occurs in nature. I thought it would be
 more fun to implement with the idea that the land you are in can affect

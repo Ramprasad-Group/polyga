@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "polyga"
-version = "1.0.1"
+version = "1.0.3"
 description = "Polymer Genetic Algorithm"
 authors = ["Joseph Kern <jkern34@gatech.edu>", "Chiho Kim <chiho.kim@gatech.edu>"]
 repository = "https://github.com/Ramprasad-Group/polyga.git"
@@ -18,6 +18,7 @@ SQLAlchemy = "^1.4.23"
 pydoc-markdown = ">=4.0.0,<5.0.0"
 mkdocs = "^1.2.2"
 pytest = "^6.2.5"
+twine = "^3.4.2"
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]

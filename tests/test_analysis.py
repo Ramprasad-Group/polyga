@@ -60,6 +60,8 @@ def test_load_planet():
     for prop in ['prop_1', 'prop_2']:
         assert prop in df.columns
     assert len(fp_df.columns) == 4
+    assert 'chromosome_ids' in df.columns
+    assert isinstance(df.chromosome_ids.to_list()[0], list)
 
     shutil.rmtree('Planet_Silly')
 
