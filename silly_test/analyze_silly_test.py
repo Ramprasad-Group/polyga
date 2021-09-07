@@ -5,43 +5,29 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+import polyga.analysis as pga
 save_loc = 'Planet_Silly'
-conn = sqlite3.connect(os.path.join(save_loc, 
-    'planetary_database.sqlite')
-)
-query = "SELECT * FROM occupants"
-df = pd.read_sql(query, conn)
-
-cur = conn.cursor()
-cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
-tables = cur.fetchall()
-fingerprint_tables = []
-for i in range(len(tables)):
-    if i != 0:
-        table = tables[i][0]
-        fingerprint_tables.append(table)
-conn.close()
-
-print(fingerprint_tables)
+df, fp_df = pga.load_planet(save_loc)
 
 for col in df.columns:
     print(col)
 
+
 def plot_average_lengths(df):
-    """Plots average lengths of polymers vs generation for all nations"""
+    """Plots average lengths of polymers vs generation for all settled_nations"""
     gens = max(df.generation) + 1
     x = np.linspace(0, gens, gens)
-    nations = np.unique(df.nation.values)
+    settled_nations = np.unique(df.settled_nation.values)
     legend = []
-    for nation in nations:
-        tdf = df.loc[df['nation'] == nation]
+    for settled_nation in settled_nations:
+        tdf = df.loc[df['settled_nation'] == settled_nation]
         means = []
         for gen in range(gens):
             tdf_ = tdf.loc[tdf['generation'] == gen]
             mean = tdf_.num_chromosomes.mean()
             means.append(mean)
         plt.plot(x, means)
-        legend.append(nation)
+        legend.append(settled_nation)
     plt.ylabel('Number of Blocks')
     plt.xlabel('Generation')
     plt.legend(legend, title='avg_num_blocks_per_polymer')
@@ -49,15 +35,15 @@ def plot_average_lengths(df):
     plt.clf()
 
 def plot_property_averages(df):
-    """Plots property averages for all nations and displays them separately."""
+    """Plots property averages for all settled_nations and displays them separately."""
     properties = ['Polymer_Coolness', 'Polymer_Funnyness','Polymer_Intelligence']
-    nations = np.unique(df.nation.values)
-    for nation in nations:
+    settled_nations = np.unique(df.settled_nation.values)
+    for settled_nation in settled_nations:
         means = []
         maxes = []
         mins = []
         stds = []
-        tdf = df.loc[df.nation == nation]
+        tdf = df.loc[df.settled_nation == settled_nation]
         for prop in properties:
             mean = []
             std = []
@@ -103,8 +89,8 @@ def plot_property_averages(df):
                 col = 0
                 row += 1
         fig.delaxes(axes[1][1])
-        fig.suptitle(nation)
-        plt.savefig(save_loc + '/' + nation + '_property_avgs.png')
+        fig.suptitle(settled_nation)
+        plt.savefig(save_loc + '/' + settled_nation + '_property_avgs.png')
         plt.clf()
 
 plot_property_averages(df)

@@ -9,7 +9,8 @@ from collections import defaultdict
 import pandas as pd
 
 from polyga import polygod as pg
-from polyga import utils 
+from polyga import utils
+from polyga import analysis as pga
 def nothing():
     print("test")
 
@@ -37,25 +38,7 @@ def fitness(df, fp_headers):
     return df
 
 
-def test_initialize():
-    planet = pg.PolyPlanet('Planet_Silly', 
-            predict_function=nothing,
-            fingerprint_function=nothing,
-            )
-
-    land = pg.PolyLand('Awesomeland', planet, 
-            generative_function=utils.chromosome_ids_to_smiles,
-            fitness_function=nothing
-            )
-
-    nation = pg.PolyNation('UnitedPolymersOfCool', land, selection_scheme='elite', 
-                           partner_selection='diversity', 
-                           num_population_initial=180,
-                           )
-    planet.complete_run()
-    shutil.rmtree('Planet_Silly')
-
-def test_adding_polymers():
+def test_load_planet():
     planet = pg.PolyPlanet('Planet_Silly', 
             predict_function=predict,
             fingerprint_function=fingerprint,
@@ -73,18 +56,11 @@ def test_adding_polymers():
     planet.advance_time()
     planet.complete_run()
     save_loc = 'Planet_Silly'
-    conn = sqlite3.connect(os.path.join(save_loc, 
-        'planetary_database.sqlite')
-    )
-    query = "SELECT * FROM polymer"
-    df = pd.read_sql(query, conn)
-    fp_headers = ['fp_1', 'fp_2', 'fp_3', 'fp_4']
-    prop_headers = ['prop_1', 'prop_2']
-    for index, row in df.iterrows():
-        fp = json.loads(row['fingerprint'])
-        properties = json.loads(row['properties'])
-        assert list(fp.keys()) == fp_headers
-        assert list(properties.keys()) == prop_headers
+    df, fp_df = pga.load_planet(save_loc)
+    for prop in ['prop_1', 'prop_2']:
+        assert prop in df.columns
+    assert len(fp_df.columns) == 4
+
     shutil.rmtree('Planet_Silly')
 
 def test_delete():
