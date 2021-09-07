@@ -70,32 +70,6 @@ I do provide examples for you to use, however.
 ### Why save into an sql database?
 This database is easy to import with pandas and can be saved during runtime.
 
-### Why are there multiple tables for fingerprints?
-Sqlite sets a maximum of 2000 columns per table. This is a compile time 
-constant, so even though I could find a way to increase it, I felt it would make
-general usage of the code harder. Thus, if you have more than 1999 fingerprints
-per object (with 1 column for indices), you will have more fingerprint tables.
-
-fingerprint tables are named 'fingerprints\_T#' with number being the number
-of the table (i.e., T1, T2...). If you know you have less than 1999 
-fingerprints, the only table will be 'fingerprints\_T1
-
-To determine how many fingerprint tables you have you can use the following
-code:
-```Python
-import sqlite3
-my_database = 'path/to/my/database.sqlite'
-conn = sqlite3.connect(my_database)
-cur = conn.cursor()
-cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
-tables = cur.fetchall()
-fingerprint_tables = []
-for i in range(len(tables)):
-    if i != 0:
-        table = tables[i][0]
-        fingerprint_tables.append(table)
-```
-
 ### Why is the sql database taking so long to load?
 This could be because you've generated a lot of polymers. I've found it can
 take a minute or two to load when I have over 100,000 polymers. 
