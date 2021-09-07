@@ -26,3 +26,5 @@ def test_initialize():
                            )
     planet.complete_run()
     shutil.rmtree('Planet_Silly')
+
+

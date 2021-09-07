@@ -1,4 +1,5 @@
 """PolyGod contains PolyPlanet, PolyLand, and PolyNation classes"""
+from typing import Dict, Union
 import os
 import sys
 import gc
@@ -365,6 +366,10 @@ class PolyLand:
             Function to put together chromosomes into polymer. Passed 
             list of chromosomes and dna, returns smiles of polymer
 
+        generative_function_parameters (Dict):  
+            Extra parameters for generative function in dict format. 
+            Default an empty Dict
+
         fitness_function (callable):  
             Function to assess fitness of polymers by. Passed population 
             dataframe. Must return
@@ -379,11 +384,13 @@ class PolyLand:
                  fraction_mutation: float = 0.2,
                  mutation_sigma_offset: float = 0.25,
                  fraction_mutate_additional_block: float = 0.05,
+                 generative_function_parameters: dict = {}
                  ):
         self.name = name
         self.age = 0
         self.fitness_function = fitness_function
         self.generative_function = generative_function
+        self.generative_function_parameters = generative_function_parameters
         self.planet = planet
         self.planet.add(self)
         self.nations = []
@@ -1099,8 +1106,8 @@ class PolyNation:
                                            self.land.land_chromosomes,
                                            size=num_chromosomes_initial))
             smiles = self.land.generative_function(polymer_chromosomes_ids, 
-                                            self.land.planet.chromosomes,
-                                            self.rng) 
+                    self.land.planet.chromosomes, self.rng, 
+                    **self.land.generative_function_parameters) 
             if smiles == None or smiles == '':
                 continue
             else:
@@ -1141,7 +1148,8 @@ class PolyNation:
             parent1 = parents[i][0]
             parent2 = parents[i][1]
             smiles = self.land.generative_function(child, 
-                        self.land.planet.chromosomes, self.rng) 
+                        self.land.planet.chromosomes, self.rng,
+                        **self.land.generative_function_parameters) 
             if smiles == None or smiles == '':
                 continue
             else:

@@ -57,7 +57,7 @@ def longest_smiles(smiles):
     return smiles
 
 def chromosome_ids_to_smiles(chromosome_ids: list, chromosomes: dict,
-        rng: default_rng) -> str:
+        rng: default_rng, **kwargs) -> str:
     """Combined chromosome ids to create new polymer smiles
        
     Combines chromosomes sequentially according to index, but combines
