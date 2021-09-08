@@ -16,6 +16,7 @@ from numpy.random import default_rng
 from scipy.special import comb
 
 from polyga.models import Polymer
+from polyga.selection_schemes import elite
 
 class PolyPlanet:
     """PolyPlanet contains the PolyLands and PolyNations of the world. 
@@ -484,10 +485,9 @@ class PolyNation:
             Current generation of polymers in this nation.
 
         selection_scheme (str):   
-            str representing how polymers in this nation choose
-            to mate. 'elite' means only the highest scoring
-            polymers mate. 'random' means random polymers are
-            chosen. Default 'elite'
+            callable representing how polymers in this nation choose
+            to mate. See polyga.selection_schemes for more details.
+            Default is elite.
 
         partner_selection (str):  
             str representing how parents choose their mate.
@@ -539,7 +539,7 @@ class PolyNation:
                  num_families: int = 15, 
                  num_parents_per_family: int = 3,
                  num_children_per_family: int = 12,
-                 selection_scheme: str = 'elite',
+                 selection_scheme: callable = elite,
                  partner_selection: str = 'diversity',
                  emigration_rate: float  = 0.1,
                  emigration_selection: str = 'best_worst',
@@ -580,11 +580,10 @@ class PolyNation:
             num_children_per_family (int):  
                 Number of children per pair of parents. Default is 4.
 
-            selection_scheme (str):  
-                str representing how polymers in this nation choose
-                to mate. 'elite' means only the highest scoring
-                polymers mate. 'random' means random polymers are
-                chosen. Default 'elite'
+            selection_scheme (callable):  
+                callable representing how polymers in this nation choose
+                to mate. See polyga.selection_schemes for more details.
+                Default is elite.
 
             partner_selection (str):  
                 str representing how parents choose their mate.
@@ -1233,33 +1232,11 @@ class PolyNation:
                         break
                 if no_more_migrants:
                     break
-        if self.selection_scheme == 'elite':
-            df = pd.DataFrame()
-            for nation in national_origins:
-                tdf = self.population.loc[self.population[
-                                              'birth_nation'
-                                                         ] == nation]
-                tdf = tdf.nlargest(
-                          num_parents_per_nationality[nation], 'fitness'
-                                  )
-                df = df.append(tdf)
-        elif self.selection_scheme == 'random':
-            if (num_parents > len(self.population)):
-                df = self.population.copy()
-            else:
-                df = pd.DataFrame()
-                for nation in national_origins:
-                    tdf = self.population.loc[self.population[
-                                                  'birth_nation'
-                                                             ] == nation]
-                    tdf = tdf.sample(n=num_parents_per_nationality[nation])
-                    df = df.append(tdf)
-
-
-        else:
-            print("Choose valid selection scheme. {} invalid.".format(
-                      self.selection_scheme))
-            sys.exit()
+        if (num_parents > len(self.population)):
+            df = self.population.copy()
+        else: 
+            df = self.selection_scheme(self.population.copy(), 
+                    num_parents_per_nationality)
 
         families = self.__mating(df)
         # Save who is parent

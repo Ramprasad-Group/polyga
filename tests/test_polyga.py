@@ -9,7 +9,7 @@ from collections import defaultdict
 import pandas as pd
 
 from polyga import polygod as pg
-from polyga import utils 
+from polyga import utils, selection_schemes
 def nothing():
     print("test")
 
@@ -48,7 +48,8 @@ def test_initialize():
             fitness_function=nothing
             )
 
-    nation = pg.PolyNation('UnitedPolymersOfCool', land, selection_scheme='elite', 
+    nation = pg.PolyNation('UnitedPolymersOfCool', land, 
+            selection_scheme=selection_schemes.elite, 
                            partner_selection='diversity', 
                            num_population_initial=180,
                            )
@@ -66,7 +67,8 @@ def test_adding_polymers():
             fitness_function=fitness
             )
 
-    nation = pg.PolyNation('UnitedPolymersOfCool', land, selection_scheme='elite', 
+    nation = pg.PolyNation('UnitedPolymersOfCool', land,
+            selection_scheme=selection_schemes.elite, 
                            partner_selection='diversity', 
                            num_population_initial=180,
                            )
