@@ -46,7 +46,7 @@ import os
 import pickle
 
 from polyga import polygod as pg
-from polyga import utils 
+from polyga import utils, selection_schemes
 
 from examples import silly_utils
 
@@ -75,7 +75,8 @@ land = pg.PolyLand('Awesomeland', planet,
         fitness_function=silly_utils.make_coolest_funniest_smartest_polymer
         )
 
-nation = pg.PolyNation('UnitedPolymersOfCool', land, selection_scheme='elite', 
+nation = pg.PolyNation('UnitedPolymersOfCool', land, 
+                       selection_scheme=selection_schemes.elite,
                        partner_selection='diversity', 
                        num_population_initial=180,
                        )
@@ -150,7 +151,8 @@ we'll expand upon these in a later tutorial.
 
 Next we create a nation on our land:
 ```Python
-nation = pg.PolyNation('UnitedPolymersOfCool', land, selection_scheme='elite', 
+nation = pg.PolyNation('UnitedPolymersOfCool', land,
+                       selection_scheme=selection_schemes.elite,
                        partner_selection='diversity', 
                        num_population_initial=180,
                        )
