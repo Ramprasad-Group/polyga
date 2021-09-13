@@ -189,7 +189,9 @@ The rest of the code should be relatively self explanatory, so I'll leave
 that for you to read. There are a lot of analyses you could run on your results
 including uniform manifold approximation and projection maps, an analysis of
 chemical composition vs generation, frequency of blocks, etc... 
-so I did not include all possible analyses here.
+so I did not include all possible analyses here. 
+
+Note that zero columns are dropped when saving the polymers.
 
 For now, let's go more in depth into 
 [how we predicted the polymer properties](predict.md).
