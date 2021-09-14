@@ -30,6 +30,7 @@ def fingerprint(df):
 def predict(df, fp_headers, models):
     df['prop_1'] = [index % 3 for index in df.index]
     df['prop_2'] = [index * 2 for index in df.index]
+    df['fp_5'] = 0
     return df
 
 def fitness(df, fp_headers):

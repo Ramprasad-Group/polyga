@@ -819,6 +819,8 @@ class PolyNation:
         for col in self.land.planet.global_cols:
             if col not in self.population.columns:
                 self.population[col] = 0
+        self.__fp_headers = [col for col in self.population.columns if col in 
+                self.__fp_headers]
         # Can't add lists to database and don't want to save fitness or 
         # immigration location
         property_cols = [col for col in self.population.columns if col not 
