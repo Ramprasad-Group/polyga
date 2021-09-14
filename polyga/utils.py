@@ -126,11 +126,11 @@ def chromosome_ids_to_smiles(chromosome_ids: list, chromosomes: dict,
         for key in endatom.keys():
             try:
                 m.GetAtomWithIdx(
-                    ms_at_idx[i][
-                        ms_edtg[i].index(key)
+                    mols_at_idx[i][
+                        mols_edtg[i].index(key)
                                 ]
                                 ).SetAtomicNum(endatom[key][1])
-            except:
+            except ValueError as e:
                 pass
 
     # Time to connect fragments.
