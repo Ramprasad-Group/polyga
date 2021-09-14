@@ -813,12 +813,13 @@ class PolyNation:
         self.population['str_chromosome_ids'] = [str(ids) for ids in 
                                      self.population['chromosome_ids'].values]
         # Drop zero columns
-        self.population = self.population.loc[:, (self.population != 0).any(
-            axis=0)]
-        # Readd zero columns if global ones removed
-        for col in self.land.planet.global_cols:
-            if col not in self.population.columns:
-                self.population[col] = 0
+        cols_to_compare = [col for col in self.population.columns if col not in
+                self.land.planet.global_cols]
+        temp = self.population[cols_to_compare]
+        temp = temp.loc[:, (temp == 0).all(axis=0)]
+        self.population.drop(labels=temp.columns, axis=1, inplace=True)
+        del temp
+
         self.__fp_headers = [col for col in self.population.columns if col in 
                 self.__fp_headers]
         # Can't add lists to database and don't want to save fitness or 
