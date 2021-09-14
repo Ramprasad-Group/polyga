@@ -248,6 +248,7 @@ class PolyPlanet:
                 sys.exit()
         df['immigration_loc'] = immigration_locs
         for land in self.lands:
+            old_cols = nation.population.columns
             for nation in land.nations:
                 name = nation.name
                 temp_df = df.loc[df.immigration_loc == name]
@@ -255,6 +256,9 @@ class PolyPlanet:
                     nation.population = nation.population.append(
                                                                   temp_df
                                                                 ).fillna(0)
+                    add_fp_headers = [col for col in nation.population.columns
+                            if col not in old_cols and col != 'immigration_loc']
+                    nation.fp_headers.extend(add_fp_headers)
 
     def random_seed(self):
         """Returns random generator seed or None if seed is 0"""
@@ -700,7 +704,7 @@ class PolyNation:
         # Reassess fitness here due to emigration.
         st = time()
         self.population = self.land.fitness_function(self.population.copy(),
-                self.__fp_headers)
+                self.fp_headers)
         if narrate:
             print('The polymers of {} worked for {} polyears.'.format(
                self.name, round((time() - st), 4))) 
@@ -739,7 +743,7 @@ class PolyNation:
         """
         st = time()
         if self.land.planet.num_cpus == 1:
-            self.population, self.__fp_headers = (
+            self.population, self.fp_headers = (
                     self.land.planet.fingerprint_function(self.population.copy())
             )
             if narrate:
@@ -748,7 +752,7 @@ class PolyNation:
             st = time()
             self.population = (
                     self.land.planet.predict_function(self.population.copy(),
-                        self.__fp_headers, self.land.planet.models)
+                        self.fp_headers, self.land.planet.models)
             )
             if narrate:
                 print('The polymers of {} took {} polyyears to graduate college.'.format(
@@ -778,7 +782,7 @@ class PolyNation:
                     valid_headers.extend(return_df_and_header[1])
 
             self.population = pd.concat(valid_dfs).fillna(0)
-            self.__fp_headers = list(set(valid_headers))
+            self.fp_headers = list(set(valid_headers))
 
             if narrate:
                 print('The polymers of {} took {} polyyears to grow up.'.format(
@@ -788,7 +792,7 @@ class PolyNation:
             sys.exit()
         st = time()
         self.population = self.land.fitness_function(self.population.copy(),
-                self.__fp_headers)
+                self.fp_headers)
         if narrate:
             print('The polymers of {} worked for {} polyyears.'.format(
                self.name, round((time() - st), 4))) 
@@ -820,16 +824,16 @@ class PolyNation:
         self.population.drop(labels=temp.columns, axis=1, inplace=True)
         del temp
 
-        self.__fp_headers = [col for col in self.population.columns if col in 
-                self.__fp_headers]
+        self.fp_headers = [col for col in self.population.columns if col in 
+                self.fp_headers]
         # Can't add lists to database and don't want to save fitness or 
         # immigration location
         property_cols = [col for col in self.population.columns if col not 
-                in self.__fp_headers and col 
+                in self.fp_headers and col 
                 not in self.land.planet.global_cols]
         
         for index, row in self.population.iterrows():
-            fingerprint = row[self.__fp_headers].to_dict()
+            fingerprint = row[self.fp_headers].to_dict()
             properties = row[property_cols].to_dict()
             polymer = Polymer(planetary_id=row['planetary_id'],
                     parent_1_id=row['parent_1_id'], 
@@ -1111,12 +1115,12 @@ class PolyNation:
         if self.partner_selection == 'diversity':
             while len(df) > 0: 
                 for index, row in df.iterrows():
-                    fp1 = row[self.__fp_headers]
+                    fp1 = row[self.fp_headers]
                     family = [row['planetary_id']]
                     similarities = {}
                     for index2, row2 in df.iterrows():
                         if index != index2:
-                            fp2 = row2[self.__fp_headers]
+                            fp2 = row2[self.fp_headers]
                             score = self.__tanimoto_similarity(fp1, fp2)
                             # error check
                             if score == -1:
