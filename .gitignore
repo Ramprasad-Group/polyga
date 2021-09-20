@@ -10,6 +10,7 @@ silly_test/Planet_Silly/*
 silly_test/Planet_Silly_Size/*
 silly_test/silly_test_with_size.py
 silly_test/loc.txt
+silly_test/Planet_Funny/
 __pycache__/
 **/__pycache__/
 **/__pycache__/*

@@ -30,7 +30,7 @@ source code page.
 6. [(OPTIONAL) tutorial background](background.md)
 
 ## Advanced Tutorials
-1. Will be added soon
+1. [Loading manual first generation](tutorials/advanced/first_gen.md)
 
 ## Background
 1. [Genetic Algorithms](background/ga.md)

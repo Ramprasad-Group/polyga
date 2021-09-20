@@ -117,3 +117,28 @@ def make_coolest_funniest_smartest_polymer(df, fp_headers):
 
     df['fitness'] = fitness
     return df
+
+def make_funniest_polymer(df, fp_headers):
+    """Score by funnyness only"""
+    # Same names as returned property
+    properties = [
+                  'Polymer_Funnyness'
+                  ]
+
+    fitness = []
+    scaled_dict = {}
+    for prop in properties:
+        vals = np.array(df[prop].values)
+        vals = np.reshape(vals, (len(vals), -1))
+        scaler = MinMaxScaler()
+        scaled_vals = scaler.fit_transform(vals)
+        scaled_dict[prop] = scaled_vals
+
+    for i in range(len(df)):
+        fit = 0
+        for prop in properties:
+            fit += 1/3 * scaled_dict[prop][i][0]
+        fitness.append(fit)
+
+    df['fitness'] = fitness
+    return df

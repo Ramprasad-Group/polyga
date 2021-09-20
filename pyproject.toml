@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "polyga"
-version = "1.0.9"
+version = "1.0.10"
 description = "Polymer Genetic Algorithm"
 authors = ["Joseph Kern <jkern34@gatech.edu>", "Chiho Kim <chiho.kim@gatech.edu>"]
 repository = "https://github.com/Ramprasad-Group/polyga.git"

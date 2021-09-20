@@ -17,6 +17,7 @@ from scipy.special import comb
 
 from polyga.models import Polymer
 from polyga.selection_schemes import elite
+from polyga.analysis import str_to_list
 
 class PolyPlanet:
     """PolyPlanet contains the PolyLands and PolyNations of the world. 
@@ -670,10 +671,11 @@ class PolyNation:
                 for key in self.immigration_pattern:
                     self.immigration_pattern[key] /= tot_percent
         self.generation = 0
-        if initial_population:
-            self.population = initial_population
-        elif initial_population_file:
-            self.population = self.__load_population(initial_population_file)
+        if initial_population is not None:
+            self.population = self.__load_population(initial_population)
+        elif initial_population_file is not None:
+            df = pd.read_csv(initial_population_file)
+            self.population = self.__load_population(df)
         else:
             self.population = self.__generate_random_population(
                                                 num_population_initial,
@@ -1058,11 +1060,41 @@ class PolyNation:
                                  )
         return pd.DataFrame(population)
 
-
-    
-    def __load_population(self, initial_population_file):
+    def __load_population(self, df):
         """Loads pandas dataframe from csv file containing initial population"""
-        return pd.read_csv(initial_population_file)
+        necessary_cols = [
+                           'chromosome_ids',
+                           'num_chromosomes',
+                           'parent_1_id',
+                           'parent_2_id',
+                           'smiles_string',
+                           'birth_land',
+                           'birth_nation',
+                           'birth_planet',
+                         ]
+        try:
+            df = df[necessary_cols]
+        except KeyError:
+            cols = [col for col in necessary_cols if col in df.columns]
+            logging.warning(f"Must have {necessary_cols} columns in your "
+                    + f"manual first generation. You only have {cols}.")
+            sys.exit()
+            
+        chromosomes = []
+        ids = []
+        for index, row in df.iterrows():
+            ids.append(self.land.planet.uid())
+            if isinstance(row['chromosome_ids'], str):
+                chromosomes.append(str_to_list(row['chromosome_ids']))
+            else:
+                chromosomes.append(row['chromosome_ids'])
+        pd.options.mode.chained_assignment = None
+        df['chromosome_ids'] = chromosomes
+        df['planetary_id'] = ids
+        pd.options.mode.chained_assignment = 'warn'
+        return df
+            
+
 
     def __log_births(self, children, parents):
         """Logs details of the birth of the new children and returns population
@@ -1217,7 +1249,13 @@ class PolyNation:
         # Will subtract number from each other nation
         num_migrant_parents = round(num_parents
                                    * self.parent_migrant_percentage)
-        num_parents_per_nationality[self.name] = (num_parents  
+        # check if first gen settlers
+        if self.name not in national_origins:
+            for nation in national_origins:
+                num_parents_per_nationality[nation] = int((num_parents  
+                                 - num_migrant_parents)/len(national_origins))
+        else:
+            num_parents_per_nationality[self.name] = (num_parents  
                                                   - num_migrant_parents)
         # Don't try to find migrants if none exist or if none mandatory.
         if (len(national_origins) != 1 
