@@ -1244,7 +1244,7 @@ class PolyNation:
         polymers will be mated.
         """
         num_parents = self.num_families * self.num_parents_per_family
-        national_origins = np.unique(self.population['birth_nation'])
+        national_origins = list(np.unique(self.population['birth_nation']))
         num_parents_per_nationality = {}
         # Will subtract number from each other nation
         num_migrant_parents = round(num_parents
