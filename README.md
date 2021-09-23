@@ -87,6 +87,11 @@ If you create your own dna list, you should keep access to it and refer back
 to that for which chromosome\_id corresponds with which chromosome. Else,
 the default dna list will have the list of all chromosomes.
 
+### Why do some ids not show up even though they're in the DNA list?
+If they only have one connection joint, they are automatically removed. This
+prevents the removal of all connection joints.
+
+
 ## References
 1. Chiho Kim, R. Batra, L. Chen, H. Tran, and R. Ramprasad, 
 “Polymer design using genetic algorithm and machine learning,” 
