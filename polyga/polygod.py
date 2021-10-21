@@ -249,8 +249,8 @@ class PolyPlanet:
                 sys.exit()
         df['immigration_loc'] = immigration_locs
         for land in self.lands:
-            old_cols = nation.population.columns
             for nation in land.nations:
+                old_cols = nation.population.columns
                 name = nation.name
                 temp_df = df.loc[df.immigration_loc == name]
                 if len(temp_df) != 0:
