@@ -7,6 +7,7 @@ from time import time
 import sqlite3
 import math
 from multiprocessing import Pool
+import logging
 
 import pandas as pd
 import numpy as np
@@ -87,7 +88,8 @@ class PolyPlanet:
                  num_cpus: int = 1,
                  random_seed : int = 0,
                  path_to_dna : str = None,
-                 save_folder: str = None):
+                 save_folder: str = None,
+                 species: str = 'polymers'):
         """Initialize planet
           
         Args:
@@ -126,7 +128,11 @@ class PolyPlanet:
                 Number of cpus to use when fingerprinting and predicting 
                 properties. If number on computer exceeded, number set to
                 number on computer. Default is one.
+
+            species (str):  
+                Name of predominant species on the planet. Default is polymers.
         """
+        self.species = species
         self.global_cols = ['planetary_id', 'parent_1_id', 
                 'parent_2_id', 'is_parent', 'num_chromosomes', 'smiles_string',
                 'land', 'nation', 'planet', 'str_chromosome_ids', 'generation',
@@ -203,7 +209,7 @@ class PolyPlanet:
                 if true narration message occur
         """
         if narrate:
-            print("Age of planet {}: {}".format(self.name, self.age))
+            logging.info("Age of planet {}: {}".format(self.name, self.age))
         self.age += 1
         for land in self.lands:
             land.score_and_emigrate(narrate)
@@ -218,7 +224,7 @@ class PolyPlanet:
     def complete_run(self):
         """Close database connection"""
         self.session.close()
-        print("Planet {} passes into oblivion...".format(self.name))
+        logging.info("Planet {} passes into oblivion...".format(self.name))
 
     def immigrate(self):
         """Immigrates polymers in emigration list"""
@@ -244,9 +250,8 @@ class PolyPlanet:
                                              )
                 immigration_locs[i] = new_loc
             elif loc not in nation_names:
-                print("Error, {} not a nation. Cannot immigrate there".format(
+                raise ValueError("Error, {} not a nation. Cannot immigrate there".format(
                        loc))
-                sys.exit()
         df['immigration_loc'] = immigration_locs
         for land in self.lands:
             for nation in land.nations:
@@ -405,7 +410,7 @@ class PolyLand:
                 If true narration message occur
         """
         if narrate:
-            print("Age of land {} is {}".format(self.name, self.age))
+            logging.info("Age of land {} is {}".format(self.name, self.age))
         self.age += 1
         for nation in self.nations:
             nation.propagate_species(take_census, narrate)
@@ -622,7 +627,7 @@ class PolyNation:
                 immigrate too, values are floats representing the percentage of 
                 polymers that will emigrate. i.e., if 10% are migrating total, 
                 with 50% to nation_a, 50% nation_b, the dict would be 
-                ``immigration_pattern = {'nation_a': 50%, 'nation_b': 50%}``
+                ``immigration_pattern = {'nation_a': .5, 'nation_b': .5}``
                 If no dict provided, polymers emigrate randomly. If percentages
                 sum to greater than 1, percentages normalized. If percentages
                 summed to less than one, remaining polymers sent to random
@@ -644,21 +649,21 @@ class PolyNation:
         self.num_children_per_family = num_children_per_family
         self.num_families = num_families
         if emigration_rate > 0.5:
-            print('Emigration rate was {}, switched to 0.5'.format(
+            logging.info('Emigration rate was {}, switched to 0.5'.format(
                   emigration_rate))
             emigration_rate = 0.5
         if emigration_rate < 0:
-            print('Emigration rate was {}, switched to 0'.format(
+            logging.info('Emigration rate was {}, switched to 0'.format(
                   emigration_rate))
             emigration_rate = 0
         self.emigration_rate = emigration_rate
         self.emigration_selection = emigration_selection
         if parent_migrant_percentage > 1:
-            print('migrant parent percentage was {}, switched to 1'.format(
+            logging.info('migrant parent percentage was {}, switched to 1'.format(
                   parent_migrant_percentage))
             parent_migrant_percentage = 1
         if parent_migrant_percentage < 0:
-            print('migrant parent percentage was {}, switched to 0'.format(
+            logging.info('migrant parent percentage was {}, switched to 0'.format(
                   parent_migrant_percentage))
             parent_migrant_percentage = 0
         self.parent_migrant_percentage = parent_migrant_percentage
@@ -688,7 +693,7 @@ class PolyNation:
                 self.num_children_per_family)
 
     def print_generation(self):
-        print(self.generation)
+        logging.info(self.generation)
 
     def propagate_species(self, take_census: bool = True, narrate: bool = True):
         """Creates families and propagates next generation of polymers.
@@ -701,36 +706,37 @@ class PolyNation:
                 If true narration message occur
         """
         if narrate:
-            print("{} of {} advances through time".format(self.name,
+            logging.info("{} of {} advances through time".format(self.name,
                                                       self.land.name))
         # Reassess fitness here due to emigration.
         st = time()
         self.population = self.land.fitness_function(self.population.copy(),
                 self.fp_headers)
         if narrate:
-            print('The polymers of {} worked for {} polyears.'.format(
-               self.name, round((time() - st), 4))) 
+            logging.info('The {} of {} worked for {} polyears.'.format(
+               self.land.planet.species, self.name, round((time() - st), 4))) 
         st = time()
         families = self.__selection()
         if narrate:
-            print('The polymers of {} married!'.format(self.name)) 
+            logging.info('The {} of {} married!'.format(self.land.planet.species,
+                self.name)) 
         # Take census here so we know if polymer is selected as parent
         st = time()
         if take_census:
             self.take_census()
         if narrate:
-            print('The nation of {} took {} polyyears to finish their census!'.format(
+            logging.info('The nation of {} took {} years to finish their census!'.format(
                self.name, round((time() - st), 4))) 
-            print('There are {} polymers in the nation'.format(
-               len(self.population)))
+            logging.info('There are {} {} in the nation'.format(
+               len(self.population), self.land.planet.species))
         st = time()
         children, parents = self.__crossover(families)
         children = [self.__mutate(child) for child in children]
         if narrate:
-            print('After {} polyears, they had children.'.format(
-                   round((time() - st), 4))) 
+            logging.info(f'After '
+            + f'{round((time() - st), 4)} years they had children.')
         self.population = self.__log_births(children, parents)
-        print("Generation {} of {} have all passed away".format(self.generation,
+        logging.info("Generation {} of {} have all passed away".format(self.generation,
                                                       self.name))
         self.generation += 1
 
@@ -749,16 +755,16 @@ class PolyNation:
                     self.land.planet.fingerprint_function(self.population.copy())
             )
             if narrate:
-                print('The polymers of {} took {} polyyears to mature.'.format(
-                   self.name, round((time() - st), 4))) 
+                logging.info(f'The {self.land.planet.species} of {self.name} '
+                + f'took {round((time() - st), 4)} years to mature.')
             st = time()
             self.population = (
                     self.land.planet.predict_function(self.population.copy(),
                         self.fp_headers, self.land.planet.models)
             )
             if narrate:
-                print('The polymers of {} took {} polyyears to graduate college.'.format(
-                   self.name, round((time() - st), 4))) 
+                logging.info(f'The {self.land.planet.species} of {self.name} '
+                + f'took {round((time() - st), 4)} years to graduate college.')
         elif self.land.planet.num_cpus > 1:
             st = time()
             split_df = np.array_split(self.population.copy(), 
@@ -787,27 +793,26 @@ class PolyNation:
             self.fp_headers = list(set(valid_headers))
 
             if narrate:
-                print('The polymers of {} took {} polyyears to grow up.'.format(
-                   self.name, round((time() - st), 4))) 
+                logging.info(f'The {self.land.planet.species} of {self.name} took '
+                + f'{round((time() - st), 4)} years to grow up.')
         else:
-            logging.critical('num_cpus to use must be >= 1')
-            sys.exit()
+            raise ValueError('num_cpus to use must be >= 1')
         st = time()
         self.population = self.land.fitness_function(self.population.copy(),
                 self.fp_headers)
         if narrate:
-            print('The polymers of {} worked for {} polyyears.'.format(
-               self.name, round((time() - st), 4))) 
+            logging.info(f'The {self.land.planet.species} of {self.name} worked for '
+            + f'{round((time() - st), 4)} years.')
         # skip emigration if no other nations exist
         if self.land.planet.num_nations > 1:
             st = time()
             self.__emigrate()
             if narrate:
-                print('The polymers of {} emigrated over {} polyyears.'.format(
-                   self.name, round((time() - st), 4))) 
+                logging.info(f'The {self.land.planet.species} of {self.name} '
+                + f'emigrated over {round((time() - st), 4)} years.')
         else:
-            print("No other nations exist for the polymers of ", end="")
-            print("{} to immigrate to".format(self.name))
+            logging.info(f"No other nations exist for the polymers of "
+                    + f"{self.name} to immigrate to")
 
     def take_census(self):
         """Take census of population (save data)"""
@@ -909,10 +914,9 @@ class PolyNation:
                     # Want to segment so each half has at least one chromosome
                     pos = self.rng.integers(1, len(chromosome_ids)-1)
                 else:
-                    print('Choose a valid crossover position. '
+                    raise ValueError('Choose a valid crossover position. '
                           + '{} invalid.'.format(
                           self.land.crossover_position))
-                    sys.exit()
                 # Want to segment so each half has at least one chromosome
                 if pos < 1:
                     pos = 1
@@ -1076,9 +1080,8 @@ class PolyNation:
             df = df[necessary_cols]
         except KeyError:
             cols = [col for col in necessary_cols if col in df.columns]
-            logging.warning(f"Must have {necessary_cols} columns in your "
+            raise KeyError(f"Must have {necessary_cols} columns in your "
                     + f"manual first generation. You only have {cols}.")
-            sys.exit()
             
         chromosomes = []
         ids = []
@@ -1189,9 +1192,8 @@ class PolyNation:
                 df = df.drop(index=family)
                                             
         else:
-            print("Please choose a valid selection scheme. {} invalid.".format(
+            raise ValueError("Please choose a valid selection scheme. {} invalid.".format(
                     self.partner_selection))
-            sys.exit()
             
         return families
 

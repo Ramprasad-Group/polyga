@@ -37,27 +37,7 @@ def fitness(df, fp_headers):
     df['fitness'] = 1
     return df
 
-
-def test_initialize():
-    planet = pg.PolyPlanet('Planet_Silly', 
-            predict_function=nothing,
-            fingerprint_function=nothing,
-            )
-
-    land = pg.PolyLand('Awesomeland', planet, 
-            generative_function=utils.chromosome_ids_to_smiles,
-            fitness_function=nothing
-            )
-
-    nation = pg.PolyNation('UnitedPolymersOfCool', land, 
-            selection_scheme=selection_schemes.elite, 
-                           partner_selection='diversity', 
-                           num_population_initial=180,
-                           )
-    planet.complete_run()
-    shutil.rmtree('Planet_Silly')
-
-def test_adding_polymers():
+def test_error_on_selection_scheme():
     planet = pg.PolyPlanet('Planet_Silly', 
             predict_function=predict,
             fingerprint_function=fingerprint,
@@ -70,28 +50,62 @@ def test_adding_polymers():
 
     nation = pg.PolyNation('UnitedPolymersOfCool', land,
             selection_scheme=selection_schemes.elite, 
-                           partner_selection='diversity', 
-                           num_population_initial=180,
-                           )
-    planet.advance_time()
+            # Error here
+            partner_selection='diversite', 
+            num_population_initial=180,
+            )
+    with pytest.raises(ValueError) as e_info:
+        planet.advance_time()
     planet.complete_run()
-    save_loc = 'Planet_Silly'
-    conn = sqlite3.connect(os.path.join(save_loc, 
-        'planetary_database.sqlite')
-    )
-    query = "SELECT * FROM polymer"
-    df = pd.read_sql(query, conn)
-    fp_headers = ['fp_1', 'fp_2', 'fp_3', 'fp_4']
-    prop_headers = ['prop_1', 'prop_2']
-    for index, row in df.iterrows():
-        fp = json.loads(row['fingerprint'])
-        properties = json.loads(row['properties'])
-        assert list(fp.keys()) == fp_headers
-        assert list(properties.keys()) == prop_headers
     shutil.rmtree('Planet_Silly')
 
-def test_delete():
-    try:
-        shutil.rmtree('Planet_Silly')
-    except:
-        pass
+def test_crossover():
+    planet = pg.PolyPlanet('Planet_Silly', 
+            predict_function=predict,
+            fingerprint_function=fingerprint,
+            )
+
+    land = pg.PolyLand('Awesomeland', planet, 
+            generative_function=utils.chromosome_ids_to_smiles,
+            fitness_function=fitness,
+            # error here
+            crossover_position='wrong'
+            )
+
+    nation = pg.PolyNation('UnitedPolymersOfCool', land,
+            selection_scheme=selection_schemes.elite, 
+            num_population_initial=180,
+            )
+    with pytest.raises(ValueError) as e_info:
+        planet.advance_time()
+    planet.complete_run()
+    shutil.rmtree('Planet_Silly')
+
+def test_num_cpus():
+    planet = pg.PolyPlanet('Planet_Silly', 
+            predict_function=predict,
+            fingerprint_function=fingerprint,
+            )
+
+    land = pg.PolyLand('Awesomeland', planet, 
+            generative_function=utils.chromosome_ids_to_smiles,
+            fitness_function=fitness,
+            )
+
+    nation = pg.PolyNation('UnitedPolymersOfCool', land,
+            selection_scheme=selection_schemes.elite, 
+            num_population_initial=180,
+            immigration_pattern={'wrong': .5}
+            )
+
+    nation = pg.PolyNation('UnitedPolymersOfCool2', land,
+            selection_scheme=selection_schemes.elite, 
+            num_population_initial=180,
+            immigration_pattern={'wrong': .5}
+            )
+    with pytest.raises(ValueError) as e_info:
+        planet.advance_time()
+        planet.advance_time()
+    planet.complete_run()
+    shutil.rmtree('Planet_Silly')
+
