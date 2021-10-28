@@ -713,7 +713,7 @@ class PolyNation:
         self.population = self.land.fitness_function(self.population.copy(),
                 self.fp_headers)
         if narrate:
-            logging.info('The {} of {} worked for {} polyears.'.format(
+            logging.info('The {} of {} worked for {} years.'.format(
                self.land.planet.species, self.name, round((time() - st), 4))) 
         st = time()
         families = self.__selection()
