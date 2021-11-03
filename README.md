@@ -101,4 +101,4 @@ Sep. 2021, doi: 10.1007/s10853-021-06520-x.
 2. Chiho Kim, R. Batra, L. Chen, H. Tran, and R. Ramprasad, 
 “Polymer design using genetic algorithm and machine learning,” 
 Computational Materials Science, vol. 186, p. 110067, Jan. 2021, 
-doi: 10.1016/j.commatsci.2020.110067. ` Documentation:
+doi: 10.1016/j.commatsci.2020.110067.
