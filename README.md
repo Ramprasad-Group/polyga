@@ -93,7 +93,12 @@ prevents the removal of all connection joints.
 
 
 ## References
-1. Chiho Kim, R. Batra, L. Chen, H. Tran, and R. Ramprasad, 
+1. J. Kern, L. Chen, C. Kim, and R. Ramprasad, “Design of 
+polymers for energy storage capacitors using machine 
+learning and evolutionary algorithms,” J Mater Sci, 
+Sep. 2021, doi: 10.1007/s10853-021-06520-x.
+
+2. Chiho Kim, R. Batra, L. Chen, H. Tran, and R. Ramprasad, 
 “Polymer design using genetic algorithm and machine learning,” 
 Computational Materials Science, vol. 186, p. 110067, Jan. 2021, 
 doi: 10.1016/j.commatsci.2020.110067. ` Documentation:
