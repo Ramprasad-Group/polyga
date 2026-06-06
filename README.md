@@ -15,7 +15,7 @@ source code page.
 `pip install polyga`
 
 ### Anaconda install
-1. `conda create -n polyga python=3.7` 
+1. `conda create -n polyga python=3.7.6` 
 2. `conda activate polyga`
 3. [Run pip install](#pip-install)
 
